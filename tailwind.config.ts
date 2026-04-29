@@ -1,0 +1,51 @@
+import type { Config } from "tailwindcss";
+import { neosTheme } from "./theme.config";
+
+const config: Config = {
+  darkMode: ["class"],
+  content: [
+    "./src/app/**/*.{ts,tsx}",
+    "./src/components/**/*.{ts,tsx}",
+    "./src/features/**/*.{ts,tsx}"
+  ],
+  theme: {
+    extend: {
+      colors: {
+        background: neosTheme.colors.background,
+        foreground: neosTheme.colors.ink,
+        border: neosTheme.colors.divider,
+        input: neosTheme.colors.divider,
+        ring: neosTheme.colors.accent,
+        primary: {
+          DEFAULT: neosTheme.colors.accent,
+          foreground: neosTheme.colors.background
+        },
+        muted: {
+          DEFAULT: neosTheme.colors.accentSoft,
+          foreground: neosTheme.colors.muted
+        },
+        destructive: {
+          DEFAULT: neosTheme.colors.danger,
+          foreground: neosTheme.colors.background
+        },
+        neos: neosTheme.colors
+      },
+      borderRadius: {
+        DEFAULT: neosTheme.radius.DEFAULT,
+        lg: neosTheme.radius.DEFAULT,
+        md: "14px",
+        sm: "12px"
+      },
+      boxShadow: {
+        card: neosTheme.shadow.card,
+        float: neosTheme.shadow.float
+      },
+      fontFamily: {
+        sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"]
+      }
+    }
+  },
+  plugins: [require("tailwindcss-animate")]
+};
+
+export default config;
