@@ -5,7 +5,6 @@ import {
   CalendarClock,
   CheckSquare,
   Clock3,
-  FlameKindling,
   FolderOpen,
   HelpCircle,
   MessageSquareText,
@@ -20,10 +19,10 @@ import { LiveClock } from "./live-clock";
 function getTimeOfDay(date: Date) {
   const hour = date.getHours();
 
-  if (hour >= 5 && hour < 12) return { greeting: "Доброе утро", emoji: "🌅" };
-  if (hour >= 12 && hour < 17) return { greeting: "Добрый день", emoji: "☀️" };
-  if (hour >= 17 && hour < 23) return { greeting: "Добрый вечер", emoji: "🌆" };
-  return { greeting: "Доброй ночи", emoji: "🌙" };
+  if (hour >= 5 && hour < 12) return { greeting: "Доброе утро" };
+  if (hour >= 12 && hour < 17) return { greeting: "Добрый день" };
+  if (hour >= 17 && hour < 23) return { greeting: "Добрый вечер" };
+  return { greeting: "Доброй ночи" };
 }
 
 function formatRelative(target: Date) {
@@ -202,7 +201,7 @@ export async function DashboardBriefing() {
     .sort((a, b) => b.date.getTime() - a.date.getTime())
     .slice(0, 6);
 
-  const { greeting, emoji } = getTimeOfDay(now);
+  const { greeting } = getTimeOfDay(now);
   const formattedDate = now.toLocaleDateString("ru-RU", {
     weekday: "long",
     day: "numeric",
@@ -214,7 +213,6 @@ export async function DashboardBriefing() {
     value: number;
     hint: string;
     href: Route;
-    icon: typeof CheckSquare;
     tone: string;
   }> = [
     {
@@ -222,7 +220,6 @@ export async function DashboardBriefing() {
       value: myOpenTasks,
       hint: "в работе и в очереди",
       href: "/tasks",
-      icon: CheckSquare,
       tone: "from-primary/10 to-primary/5 text-primary"
     },
     {
@@ -230,7 +227,6 @@ export async function DashboardBriefing() {
       value: myEscalatedTickets,
       hint: "тикетов требуют реакции",
       href: "/helpdesk",
-      icon: FlameKindling,
       tone: "from-rose-500/15 to-rose-500/5 text-rose-600"
     },
     {
@@ -238,7 +234,6 @@ export async function DashboardBriefing() {
       value: myTodayEventsCount,
       hint: "встреч в моём расписании",
       href: "/calendar",
-      icon: CalendarClock,
       tone: "from-emerald-500/15 to-emerald-500/5 text-emerald-600"
     }
   ];
@@ -276,7 +271,7 @@ export async function DashboardBriefing() {
           </div>
 
           <h1 className="mt-4 text-4xl font-black tracking-tight">
-            {greeting}, {user.name.split(" ")[0]} {emoji}
+            {greeting}, {user.name.split(" ")[0]}
           </h1>
           <p className="mt-3 max-w-xl text-base leading-7 text-muted-foreground">
             {nextEvent
@@ -296,26 +291,21 @@ export async function DashboardBriefing() {
         </div>
 
         <div className="grid gap-3 lg:col-span-5 lg:grid-cols-3">
-          {personalKpis.map((kpi) => {
-            const Icon = kpi.icon;
-
-            return (
-              <Link
-                key={kpi.label}
-                href={kpi.href}
-                className={`group relative overflow-hidden rounded-default bg-gradient-to-br ${kpi.tone} p-4 transition hover:-translate-y-0.5`}
-              >
-                <Icon className="size-5" aria-hidden="true" />
-                <p className="mt-6 text-3xl font-black tracking-tight text-foreground">{kpi.value}</p>
-                <p className="mt-1 text-xs font-black uppercase tracking-wide text-foreground/80">{kpi.label}</p>
-                <p className="mt-2 line-clamp-2 text-xs font-semibold text-foreground/60">{kpi.hint}</p>
-                <ArrowRight
-                  className="absolute right-3 top-3 size-4 opacity-0 transition group-hover:opacity-100"
-                  aria-hidden="true"
-                />
-              </Link>
-            );
-          })}
+          {personalKpis.map((kpi) => (
+            <Link
+              key={kpi.label}
+              href={kpi.href}
+              className={`group relative overflow-hidden rounded-default bg-gradient-to-br ${kpi.tone} p-4 transition hover:-translate-y-0.5`}
+            >
+              <p className="text-3xl font-black tracking-tight text-foreground">{kpi.value}</p>
+              <p className="mt-2 text-xs font-black uppercase tracking-wide text-foreground/80">{kpi.label}</p>
+              <p className="mt-2 line-clamp-2 text-xs font-semibold text-foreground/60">{kpi.hint}</p>
+              <ArrowRight
+                className="absolute right-3 top-3 size-4 opacity-0 transition group-hover:opacity-100"
+                aria-hidden="true"
+              />
+            </Link>
+          ))}
         </div>
       </div>
 
