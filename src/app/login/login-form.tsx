@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Route } from "next";
-import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function LoginForm() {
@@ -41,14 +41,16 @@ export function LoginForm() {
   return (
     <main className="min-h-screen bg-white px-4 py-10">
       <section className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-md flex-col justify-center">
-        <div className="mb-8 flex items-center gap-3">
-          <div className="flex size-12 items-center justify-center rounded-default bg-primary text-white shadow-card">
-            <Sparkles className="size-6" aria-hidden="true" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-black tracking-tight">NEOS</h1>
-            <p className="text-sm font-semibold text-muted-foreground">Вход в корпоративную экосистему</p>
-          </div>
+        <div className="mb-8 flex flex-col items-center gap-4 text-center">
+          <Image
+            src="/logo.png"
+            alt="NEOS"
+            width={140}
+            height={140}
+            className="size-32 object-contain"
+            priority
+          />
+          <p className="text-sm font-semibold text-muted-foreground">Вход в корпоративную экосистему</p>
         </div>
 
         <form onSubmit={handleSubmit} className="rounded-default bg-white p-6 shadow-float ring-1 ring-border">

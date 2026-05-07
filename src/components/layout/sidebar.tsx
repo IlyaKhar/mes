@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
 import { navigationItems } from "@/components/layout/navigation-config";
 import { useActiveNavigation } from "@/components/layout/use-active-navigation";
 import { cn } from "@/lib/utils";
@@ -11,15 +11,25 @@ export function Sidebar() {
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-[260px] bg-white/78 px-4 py-5 shadow-float backdrop-blur-2xl lg:block">
-      <div className="mb-8 flex items-center gap-3 rounded-default bg-white p-3 shadow-card ring-1 ring-border">
-        <div className="flex size-12 items-center justify-center rounded-default bg-primary text-white shadow-card">
-          <Sparkles className="size-6" aria-hidden="true" />
+      <Link
+        href="/"
+        className="mb-8 flex items-center gap-3 rounded-default bg-white p-3 shadow-card ring-1 ring-border transition hover:shadow-float"
+      >
+        <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-default bg-white">
+          <Image
+            src="/logo.png"
+            alt="NEOS"
+            width={48}
+            height={48}
+            className="size-12 object-contain"
+            priority
+          />
         </div>
         <div>
           <p className="text-lg font-black tracking-tight">NEOS</p>
           <p className="text-xs font-semibold text-muted-foreground">Единый центр компании</p>
         </div>
-      </div>
+      </Link>
 
       <nav aria-label="Главная навигация" className="space-y-2">
         {navigationItems.map((item) => {
