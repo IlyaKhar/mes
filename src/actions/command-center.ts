@@ -63,7 +63,7 @@ async function runQuickCommand(query: string): Promise<CommandCenterResponse> {
         type: "command",
         title: `Создана задача: ${task.title}`,
         description: "Task Orbit",
-        href: "#tasks"
+        href: "/tasks"
       }
     };
   }
@@ -82,7 +82,7 @@ async function runQuickCommand(query: string): Promise<CommandCenterResponse> {
         type: "command",
         title: `Создана заявка: ${ticket.title}`,
         description: `Service Flow · #${ticket.number}`,
-        href: "#helpdesk"
+        href: "/helpdesk"
       }
     };
   }
@@ -101,7 +101,7 @@ async function runQuickCommand(query: string): Promise<CommandCenterResponse> {
         type: "command",
         title: `Создана статья: ${page.title}`,
         description: "WikiCore",
-        href: "#wiki"
+        href: "/wiki"
       }
     };
   }
@@ -192,28 +192,28 @@ export async function commandCenterAction(query: string): Promise<CommandCenterR
       type: "user" as const,
       title: item.name,
       description: `${item.email} · ${item.role}`,
-      href: "#messenger"
+      href: "/messenger"
     })),
     ...tasks.map((item) => ({
       id: item.id,
       type: "task" as const,
       title: item.title,
       description: `Task Orbit · ${item.status}${item.assignee ? ` · ${item.assignee.name}` : ""}`,
-      href: "#tasks"
+      href: "/tasks"
     })),
     ...wikiPages.map((item) => ({
       id: item.id,
       type: "wiki" as const,
       title: item.title,
       description: `WikiCore · ${item.status}`,
-      href: "#wiki"
+      href: "/wiki"
     })),
     ...tickets.map((item) => ({
       id: item.id,
       type: "ticket" as const,
       title: `#${item.number} ${item.title}`,
       description: `Service Flow · ${item.status} · ${item.priority}`,
-      href: "#helpdesk"
+      href: "/helpdesk"
     }))
   ];
 

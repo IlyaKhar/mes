@@ -26,42 +26,42 @@ const moduleCommands = [
   {
     label: "Messenger",
     description: "Чаты, треды, голосовые и ИИ-саммари",
-    href: "/#messenger",
+    href: "/messenger",
     icon: MessageSquareText,
     keywords: "мессенджер чат сообщение тред голосовые ai summary"
   },
   {
     label: "Service Flow",
     description: "Заявки, SLA, категории IT HR Снабжение",
-    href: "/#helpdesk",
+    href: "/helpdesk",
     icon: HelpCircle,
     keywords: "helpdesk service flow заявка sla поддержка категория"
   },
   {
     label: "Task Orbit",
     description: "Канбан, workload и Pomodoro Focus Mode",
-    href: "/#tasks",
+    href: "/tasks",
     icon: CheckSquare,
     keywords: "задачи task orbit канбан workload pomodoro focus"
   },
   {
     label: "SyncNode",
     description: "Календарь, смены, офис и удаленка",
-    href: "/#calendar",
+    href: "/calendar",
     icon: CalendarDays,
     keywords: "календарь syncnode офис удаленка 2через2 встреча"
   },
   {
     label: "CloudSpace",
     description: "Файлы, версии, QR и ссылки",
-    href: "/#drive",
+    href: "/drive",
     icon: FolderOpen,
     keywords: "диск cloudspace файл pdf doc img загрузить поделиться qr"
   },
   {
     label: "WikiCore",
     description: "База знаний, дерево статей и smart linking",
-    href: "/#wiki",
+    href: "/wiki",
     icon: Workflow,
     keywords: "вики wikicore статья знания smart linking"
   }
@@ -71,42 +71,42 @@ const quickActions = [
   {
     label: "> создать задачу",
     description: "Открыть Task Orbit и подготовить новую карточку",
-    href: "/#tasks",
+    href: "/tasks",
     icon: Plus,
     result: "Команда: создать задачу"
   },
   {
     label: "> написать сообщение",
     description: "Перейти в Messenger и начать диалог",
-    href: "/#messenger",
+    href: "/messenger",
     icon: Send,
     result: "Команда: написать сообщение"
   },
   {
     label: "> загрузить файл",
     description: "Открыть CloudSpace для загрузки документа",
-    href: "/#drive",
+    href: "/drive",
     icon: UploadCloud,
     result: "Команда: загрузить файл"
   },
   {
     label: "> создать заявку",
     description: "Добавить обращение в Service Flow",
-    href: "/#helpdesk",
+    href: "/helpdesk",
     icon: HelpCircle,
     result: "Команда: создать заявку"
   },
   {
     label: "> создать статью",
     description: "Открыть WikiCore и завести материал базы знаний",
-    href: "/#wiki",
+    href: "/wiki",
     icon: PenLine,
     result: "Команда: создать статью"
   },
   {
     label: "> запланировать встречу",
     description: "Перейти в SyncNode и проверить свободный слот",
-    href: "/#calendar",
+    href: "/calendar",
     icon: CalendarDays,
     result: "Команда: запланировать встречу"
   }
@@ -116,42 +116,42 @@ const entityCommands = [
   {
     label: "Инцидентная комната",
     description: "Messenger: активный чат по биллингу и SLA",
-    href: "/#messenger",
+    href: "/messenger",
     icon: MessageSquareText,
     keywords: "биллинг sla чат тред"
   },
   {
     label: "HD-1042 Проверить доступы к биллингу",
     description: "Service Flow: критичная заявка",
-    href: "/#helpdesk",
+    href: "/helpdesk",
     icon: HelpCircle,
     keywords: "заявка доступы биллинг критичный"
   },
   {
     label: "Подготовить релиз биллинга",
     description: "Task Orbit: задача в работе",
-    href: "/#tasks",
+    href: "/tasks",
     icon: CheckSquare,
     keywords: "задача релиз биллинг pomodoro"
   },
   {
     label: "Синк по биллингу",
     description: "SyncNode: встреча сегодня в офисе",
-    href: "/#calendar",
+    href: "/calendar",
     icon: CalendarDays,
     keywords: "встреча календарь офис биллинг"
   },
   {
     label: "Регламент SLA.pdf",
     description: "CloudSpace: PDF с историей версий",
-    href: "/#drive",
+    href: "/drive",
     icon: FilePlus2,
     keywords: "pdf файл регламент sla qr"
   },
   {
     label: "SLA и эскалации",
     description: "WikiCore: статья базы знаний",
-    href: "/#wiki",
+    href: "/wiki",
     icon: Workflow,
     keywords: "вики статья sla эскалации smart link"
   }

@@ -15,7 +15,7 @@ export const navigationItems = [
     label: "Обзор",
     title: "Операционный центр NEOS",
     description: "Пульс компании, метрики и быстрый доступ ко всем модулям",
-    href: "/#dashboard",
+    href: "/",
     icon: Home
   },
   {
@@ -23,7 +23,7 @@ export const navigationItems = [
     label: "Мессенджер",
     title: "Messenger",
     description: "Чаты, группы, участники и сообщения из базы",
-    href: "/#messenger",
+    href: "/messenger",
     icon: MessageSquareText
   },
   {
@@ -31,7 +31,7 @@ export const navigationItems = [
     label: "Поддержка",
     title: "Service Flow",
     description: "Заявки отдела, SLA, эскалации и агенты поддержки",
-    href: "/#helpdesk",
+    href: "/helpdesk",
     icon: HelpCircle
   },
   {
@@ -39,7 +39,7 @@ export const navigationItems = [
     label: "Задачи",
     title: "Task Orbit",
     description: "Задачи, исполнители, статусы, таймеры и связь с заявками",
-    href: "/#tasks",
+    href: "/tasks",
     icon: CheckSquare
   },
   {
@@ -47,7 +47,7 @@ export const navigationItems = [
     label: "Календарь",
     title: "SyncNode",
     description: "События, участники, смены и проверка пересечений",
-    href: "/#calendar",
+    href: "/calendar",
     icon: CalendarDays
   },
   {
@@ -55,7 +55,7 @@ export const navigationItems = [
     label: "Диск",
     title: "CloudSpace",
     description: "Файлы, владельцы, версии, шаринг и скачивание",
-    href: "/#drive",
+    href: "/drive",
     icon: FolderOpen
   },
   {
@@ -63,7 +63,7 @@ export const navigationItems = [
     label: "Вики",
     title: "WikiCore",
     description: "Справочник, статьи, авторы, прочтения и история изменений",
-    href: "/#wiki",
+    href: "/wiki",
     icon: Workflow
   }
 ] as const;

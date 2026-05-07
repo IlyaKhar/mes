@@ -15,10 +15,14 @@ export type SessionUser = {
 
 export async function getSessionUser(): Promise<SessionUser | null> {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.email) return null;
+  if (!session?.user) return null;
+
+  const email = session.user.email?.toLowerCase().trim();
+  const id = session.user.id || undefined;
+  if (!email && !id) return null;
 
   const user = await db.user.findUnique({
-    where: { email: session.user.email },
+    where: email ? { email } : { id },
     select: {
       id: true,
       email: true,
