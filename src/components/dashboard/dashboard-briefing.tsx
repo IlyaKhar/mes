@@ -270,7 +270,7 @@ export async function DashboardBriefing() {
             Брифинг · {formattedDate}
           </div>
 
-          <h1 className="mt-4 text-4xl font-black tracking-tight">
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-foreground">
             {greeting}, {user.name.split(" ")[0]}
           </h1>
           <p className="mt-3 max-w-xl text-base leading-7 text-muted-foreground">
@@ -297,7 +297,7 @@ export async function DashboardBriefing() {
               href={kpi.href}
               className={`group relative overflow-hidden rounded-default bg-gradient-to-br ${kpi.tone} p-4 transition hover:-translate-y-0.5`}
             >
-              <p className="font-mono text-3xl font-black tracking-tight tabular-nums text-foreground">
+              <p className="font-mono text-3xl font-bold tracking-tight tabular-nums text-foreground">
                 {kpi.value}
               </p>
               <p className="mt-2 text-xs font-black uppercase tracking-wide text-foreground/80">{kpi.label}</p>

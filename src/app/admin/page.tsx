@@ -26,22 +26,22 @@ export default async function AdminPage() {
     <div className="space-y-6">
       <section className="rounded-default bg-white p-6 shadow-card ring-1 ring-border">
         <p className="text-sm font-black uppercase tracking-[0.2em] text-primary">Admin</p>
-        <h1 className="mt-3 text-3xl font-black tracking-tight">Панель управления NEOS</h1>
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground">Панель управления NEOS</h1>
         <p className="mt-3 text-sm text-muted-foreground">Пользователи, системные метрики и журнал действий.</p>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader><CardTitle>Пользователи</CardTitle></CardHeader>
-          <CardContent><p className="font-mono text-4xl font-black tabular-nums">{users.length}</p></CardContent>
+          <CardContent><p className="font-mono text-4xl font-bold tabular-nums text-foreground">{users.length}</p></CardContent>
         </Card>
         <Card>
           <CardHeader><CardTitle>Активные задачи</CardTitle></CardHeader>
-          <CardContent><p className="font-mono text-4xl font-black tabular-nums">{activeTasks}</p></CardContent>
+          <CardContent><p className="font-mono text-4xl font-bold tabular-nums text-foreground">{activeTasks}</p></CardContent>
         </Card>
         <Card>
           <CardHeader><CardTitle>Открытые тикеты</CardTitle></CardHeader>
-          <CardContent><p className="font-mono text-4xl font-black tabular-nums">{openTickets}</p></CardContent>
+          <CardContent><p className="font-mono text-4xl font-bold tabular-nums text-foreground">{openTickets}</p></CardContent>
         </Card>
       </section>
 

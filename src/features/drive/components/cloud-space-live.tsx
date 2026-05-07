@@ -260,7 +260,7 @@ export function CloudSpaceLive({
                     <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100vw-2rem)] max-w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-default bg-white p-6 shadow-float ring-1 ring-border">
                       <div className="mb-5 flex items-start justify-between gap-4">
                         <div>
-                          <Dialog.Title className="text-2xl font-black">Поделиться файлом</Dialog.Title>
+                          <Dialog.Title className="text-2xl font-semibold text-foreground">Поделиться файлом</Dialog.Title>
                           <Dialog.Description className="mt-2 text-sm leading-6 text-muted-foreground">
                             Генерируем share-url в базе и показываем QR-заглушку для быстрого доступа.
                           </Dialog.Description>

@@ -26,8 +26,8 @@ export function Sidebar() {
           />
         </div>
         <div>
-          <p className="text-lg font-black tracking-tight">NEOS</p>
-          <p className="text-xs font-semibold text-muted-foreground">Единый центр компании</p>
+          <p className="text-lg font-bold tracking-tight text-foreground">NEOS</p>
+          <p className="text-xs font-medium text-muted-foreground">Единый центр компании</p>
         </div>
       </Link>
 

@@ -296,7 +296,7 @@ export function WikiCoreLive({
                     <p className="text-sm font-black uppercase tracking-[0.22em] text-primary">/{activePage.slug}</p>
                     <Badge tone={activePage.status === "PUBLISHED" ? "green" : "amber"}>{statusLabels[activePage.status]}</Badge>
                   </div>
-                  <h3 className="mt-4 text-4xl font-black leading-[1.12] tracking-tight text-foreground">{activePage.title}</h3>
+                  <h3 className="mt-4 text-4xl font-semibold leading-[1.12] tracking-tight text-foreground">{activePage.title}</h3>
                   <div className="mt-4 flex flex-wrap items-center gap-3 text-sm font-bold text-muted-foreground">
                     <span>Автор: {activePage.author.name}</span>
                     <span className="size-1.5 rounded-full bg-primary" />

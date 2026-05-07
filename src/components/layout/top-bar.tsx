@@ -26,8 +26,8 @@ export function TopBar() {
             <ActiveIcon className="size-5" aria-hidden="true" />
           </div>
           <div className="min-w-0">
-            <h1 className="truncate text-2xl font-black tracking-tight">{activeItem.title}</h1>
-            <p className="mt-1 line-clamp-1 text-sm font-semibold text-muted-foreground">{activeItem.description}</p>
+            <h1 className="truncate text-2xl font-semibold tracking-tight text-foreground">{activeItem.title}</h1>
+            <p className="mt-1 line-clamp-1 text-sm font-medium text-muted-foreground">{activeItem.description}</p>
           </div>
         </div>
       </div>
