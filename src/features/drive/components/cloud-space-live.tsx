@@ -48,10 +48,10 @@ function getFileIcon(kind: FileKind) {
 }
 
 function getFileTone(kind: FileKind) {
-  if (kind === "PDF") return "bg-neos-accentSoft text-primary shadow-[0_16px_32px_rgba(0,87,255,0.14)]";
-  if (kind === "DOC") return "bg-primary/15 text-primary shadow-[0_16px_32px_rgba(0,87,255,0.18)]";
-  if (kind === "IMAGE") return "bg-primary/25 text-primary shadow-[0_16px_32px_rgba(0,87,255,0.22)]";
-  return "bg-cyan-50 text-neos-cyan shadow-[0_16px_32px_rgba(0,87,255,0.12)]";
+  if (kind === "PDF") return "bg-neos-accentSoft text-primary shadow-[0_16px_32px_rgba(26,61,99,0.14)]";
+  if (kind === "DOC") return "bg-primary/15 text-primary shadow-[0_16px_32px_rgba(26,61,99,0.18)]";
+  if (kind === "IMAGE") return "bg-primary/25 text-primary shadow-[0_16px_32px_rgba(26,61,99,0.22)]";
+  return "bg-cyan-50 text-neos-cyan shadow-[0_16px_32px_rgba(26,61,99,0.12)]";
 }
 
 function formatSize(size: number) {
@@ -185,7 +185,7 @@ export function CloudSpaceLive({
             className={cn(
               "rounded-default bg-neos-accentSoft p-8 text-center transition-all duration-300",
               isDragActive
-                ? "scale-[1.01] shadow-[0_0_42px_rgba(0,87,255,0.42)] ring-2 ring-primary"
+                ? "scale-[1.01] shadow-[0_0_42px_rgba(26,61,99,0.42)] ring-2 ring-primary"
                 : "shadow-card ring-1 ring-border"
             )}
           >
@@ -314,7 +314,7 @@ export function CloudSpaceLive({
               <div className="space-y-3">
                 {activeFile.versions.map((version, index) => (
                   <article key={version.id} className="relative rounded-default bg-white p-4 shadow-card">
-                    <div className="absolute -left-1 top-5 size-3 rounded-full bg-primary shadow-[0_0_14px_rgba(0,87,255,0.7)]" />
+                    <div className="absolute -left-1 top-5 size-3 rounded-full bg-primary shadow-[0_0_14px_rgba(26,61,99,0.7)]" />
                     <div className="flex items-center justify-between gap-3">
                       <p className="text-sm font-black">{version.author.name}</p>
                       <Badge tone={index === 0 ? "blue" : "cyan"}>{index === 0 ? "Текущая" : `v${version.version}`}</Badge>
