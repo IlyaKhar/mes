@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DashboardBriefing } from "@/components/dashboard/dashboard-briefing";
 import { DashboardSkeleton, MetricsWidget } from "@/components/dashboard/db-widgets";
 import { navigationItems } from "@/components/layout/navigation-config";
 import { requireSession } from "@/lib/auth";
@@ -9,22 +10,14 @@ import { requireSession } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const user = await requireSession();
+  await requireSession();
   const moduleItems = navigationItems.filter((item) => item.id !== "dashboard");
 
   return (
     <div className="space-y-6">
-      <section className="overflow-hidden rounded-default bg-primary p-8 text-white shadow-float">
-        <div className="max-w-3xl">
-          <p className="text-sm font-black uppercase tracking-[0.24em] text-white/70">Пульс компании</p>
-          <h2 className="mt-4 text-4xl font-black tracking-tight">
-            Привет, {user.name.split(" ")[0]}
-          </h2>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-white/78">
-            Это операционный центр NEOS. Метрики снизу собраны из PostgreSQL, модули в меню — отдельные страницы с боевой логикой.
-          </p>
-        </div>
-      </section>
+      <Suspense fallback={<DashboardSkeleton title="Брифинг" />}>
+        <DashboardBriefing />
+      </Suspense>
 
       <Suspense fallback={<DashboardSkeleton title="Метрики" />}>
         <MetricsWidget />
