@@ -13,22 +13,17 @@ export function Sidebar() {
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-[260px] bg-white/78 px-4 py-5 shadow-float backdrop-blur-2xl lg:block">
       <Link
         href="/"
-        className="mb-8 flex items-center gap-3 rounded-default bg-white p-3 shadow-card ring-1 ring-border transition hover:shadow-float"
+        aria-label="NEOS — на главную"
+        className="mb-8 flex items-center justify-center rounded-default bg-white p-4 shadow-card ring-1 ring-border transition hover:shadow-float"
       >
-        <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-default bg-white">
-          <Image
-            src="/logo.png"
-            alt="NEOS"
-            width={48}
-            height={48}
-            className="size-12 object-contain"
-            priority
-          />
-        </div>
-        <div>
-          <p className="text-lg font-bold tracking-tight text-foreground">NEOS</p>
-          <p className="text-xs font-medium text-muted-foreground">Единый центр компании</p>
-        </div>
+        <Image
+          src="/logo.png"
+          alt="NEOS"
+          width={180}
+          height={180}
+          className="h-28 w-auto object-contain"
+          priority
+        />
       </Link>
 
       <nav aria-label="Главная навигация" className="space-y-2">
