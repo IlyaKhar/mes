@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --font-inter: "Inter";
-}
-
 * {
   box-sizing: border-box;
 }
@@ -19,6 +15,13 @@ body {
   margin: 0;
   background: #ffffff;
   color: #07111f;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-feature-settings: "ss01", "ss02", "cv01", "cv11";
+}
+
+.font-mono,
+[class*="tabular-nums"] {
+  font-variant-numeric: tabular-nums;
 }
 
 ::selection {

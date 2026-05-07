@@ -48,7 +48,7 @@ export async function MetricsWidget() {
       {metrics.map((metric) => (
         <article key={metric.label} className="rounded-default bg-white p-5 shadow-card ring-1 ring-border">
           <p className="text-sm font-bold text-muted-foreground">{metric.label}</p>
-          <p className="mt-3 text-3xl font-black tracking-tight">{metric.value}</p>
+          <p className="mt-3 font-mono text-3xl font-black tracking-tight tabular-nums">{metric.value}</p>
           <p className="mt-2 text-sm font-black text-primary">{metric.hint}</p>
         </article>
       ))}

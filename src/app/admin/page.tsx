@@ -33,15 +33,15 @@ export default async function AdminPage() {
       <section className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader><CardTitle>Пользователи</CardTitle></CardHeader>
-          <CardContent><p className="text-4xl font-black">{users.length}</p></CardContent>
+          <CardContent><p className="font-mono text-4xl font-black tabular-nums">{users.length}</p></CardContent>
         </Card>
         <Card>
           <CardHeader><CardTitle>Активные задачи</CardTitle></CardHeader>
-          <CardContent><p className="text-4xl font-black">{activeTasks}</p></CardContent>
+          <CardContent><p className="font-mono text-4xl font-black tabular-nums">{activeTasks}</p></CardContent>
         </Card>
         <Card>
           <CardHeader><CardTitle>Открытые тикеты</CardTitle></CardHeader>
-          <CardContent><p className="text-4xl font-black">{openTickets}</p></CardContent>
+          <CardContent><p className="font-mono text-4xl font-black tabular-nums">{openTickets}</p></CardContent>
         </Card>
       </section>
 

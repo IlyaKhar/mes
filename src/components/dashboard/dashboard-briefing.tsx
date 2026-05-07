@@ -297,7 +297,9 @@ export async function DashboardBriefing() {
               href={kpi.href}
               className={`group relative overflow-hidden rounded-default bg-gradient-to-br ${kpi.tone} p-4 transition hover:-translate-y-0.5`}
             >
-              <p className="text-3xl font-black tracking-tight text-foreground">{kpi.value}</p>
+              <p className="font-mono text-3xl font-black tracking-tight tabular-nums text-foreground">
+                {kpi.value}
+              </p>
               <p className="mt-2 text-xs font-black uppercase tracking-wide text-foreground/80">{kpi.label}</p>
               <p className="mt-2 line-clamp-2 text-xs font-semibold text-foreground/60">{kpi.hint}</p>
               <ArrowRight
@@ -318,8 +320,10 @@ export async function DashboardBriefing() {
           {nextEvent ? (
             <Link href="/calendar" className="mt-3 block">
               <p className="text-lg font-black tracking-tight">{nextEvent.title}</p>
-              <p className="mt-1 text-sm font-bold text-primary">{formatRelative(nextEvent.startsAt)}</p>
-              <p className="mt-2 text-xs font-semibold text-muted-foreground">
+              <p className="mt-1 font-mono text-sm font-bold tabular-nums text-primary">
+                {formatRelative(nextEvent.startsAt)}
+              </p>
+              <p className="mt-2 font-mono text-xs font-semibold tabular-nums text-muted-foreground">
                 {nextEvent.startsAt.toLocaleString("ru-RU", {
                   hour: "2-digit",
                   minute: "2-digit",
@@ -375,7 +379,7 @@ export async function DashboardBriefing() {
                         <p className="truncate text-sm font-black">{item.title}</p>
                         <p className="truncate text-xs font-semibold text-muted-foreground">{item.description}</p>
                       </div>
-                      <span className="shrink-0 text-xs font-bold text-muted-foreground">
+                      <span className="shrink-0 font-mono text-xs font-bold tabular-nums text-muted-foreground">
                         {formatRelative(item.date)}
                       </span>
                     </Link>
@@ -407,7 +411,9 @@ export async function DashboardBriefing() {
                 </div>
               ))}
             </div>
-            <span className="text-sm font-black text-foreground">{officeToday.length}</span>
+            <span className="font-mono text-sm font-black tabular-nums text-foreground">
+              {officeToday.length}
+            </span>
             <span className="text-sm font-bold text-muted-foreground">
               {officeToday.length === 1 ? "сотрудник на месте" : "сотрудников на месте"}
             </span>

@@ -19,9 +19,11 @@ export function LiveClock() {
   }, []);
 
   return (
-    <span className="inline-flex items-center gap-2 rounded-default bg-neos-accentSoft px-3 py-1.5 font-black text-primary">
+    <span className="inline-flex items-center gap-2 rounded-default bg-neos-accentSoft px-3 py-1.5 font-mono text-sm font-bold text-primary">
       <Clock3 className="size-4" aria-hidden="true" />
-      <span suppressHydrationWarning>{time}</span>
+      <span suppressHydrationWarning className="tabular-nums">
+        {time}
+      </span>
     </span>
   );
 }
