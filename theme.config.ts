@@ -1,14 +1,18 @@
 export const neosTheme = {
   colors: {
-    background: "#FFFFFF",
+    background: "#F6F3EC",
+    surface: "#FFFFFF",
+    surfaceMuted: "#FBF9F4",
     accent: "#0057FF",
     accentSoft: "#EAF1FF",
-    divider: "#F0F4FF",
-    ink: "#07111F",
-    muted: "#61708A",
+    accentDeep: "#1A2B6B",
+    divider: "#E7E2D6",
+    ink: "#0E1116",
+    inkSoft: "#2A2F3A",
+    muted: "#6B6F7A",
     success: "#12B981",
-    warning: "#F59E0B",
-    danger: "#EF4444",
+    warning: "#FFB627",
+    danger: "#E11D48",
     violet: "#7C3AED",
     cyan: "#06B6D4"
   },
@@ -16,7 +20,7 @@ export const neosTheme = {
     DEFAULT: "16px"
   },
   shadow: {
-    card: "0 20px 60px rgba(0, 87, 255, 0.08)",
-    float: "0 24px 80px rgba(7, 17, 31, 0.12)"
+    card: "0 12px 40px rgba(14, 17, 22, 0.06)",
+    float: "0 24px 80px rgba(14, 17, 22, 0.10)"
   }
 } as const;

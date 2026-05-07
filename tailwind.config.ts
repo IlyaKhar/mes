@@ -12,13 +12,15 @@ const config: Config = {
     extend: {
       colors: {
         background: neosTheme.colors.background,
+        surface: neosTheme.colors.surface,
+        "surface-muted": neosTheme.colors.surfaceMuted,
         foreground: neosTheme.colors.ink,
         border: neosTheme.colors.divider,
         input: neosTheme.colors.divider,
         ring: neosTheme.colors.accent,
         primary: {
           DEFAULT: neosTheme.colors.accent,
-          foreground: neosTheme.colors.background
+          foreground: neosTheme.colors.surface
         },
         muted: {
           DEFAULT: neosTheme.colors.accentSoft,
@@ -26,7 +28,7 @@ const config: Config = {
         },
         destructive: {
           DEFAULT: neosTheme.colors.danger,
-          foreground: neosTheme.colors.background
+          foreground: neosTheme.colors.surface
         },
         neos: neosTheme.colors
       },
