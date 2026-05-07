@@ -14,7 +14,7 @@ body {
   min-height: 100vh;
   margin: 0;
   background: #f6f3ec;
-  color: #0e1116;
+  color: #252a35;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   font-feature-settings: "ss01", "ss02", "cv01", "cv11";
 }
