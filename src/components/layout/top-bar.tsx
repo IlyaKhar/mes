@@ -11,7 +11,7 @@ export function TopBar() {
   const { data: session } = useSession();
   const activeItem = useActiveNavigation();
   const ActiveIcon = activeItem.icon;
-  const userName = session?.user?.name ?? "Пользователь OKEI";
+  const userName = session?.user?.name ?? "Пользователь OKES";
   const isAdmin = session?.user?.role === "ADMIN";
   const userRole = isAdmin ? "Администратор" : "Сотрудник";
   const roleHint = isAdmin
@@ -26,7 +26,7 @@ export function TopBar() {
 
         <div className="min-w-0 flex-1">
           <div className="mb-1 hidden flex-wrap items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-muted-foreground sm:flex">
-            <span>OKEI</span>
+            <span>OKES</span>
             <ChevronRight className="size-4 text-primary" aria-hidden="true" />
             <span className="text-primary">{activeItem.label}</span>
           </div>

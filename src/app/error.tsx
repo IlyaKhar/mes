@@ -12,7 +12,7 @@ export default function GlobalError({
   return (
     <main className="min-h-[70vh] px-4 py-10">
       <section className="mx-auto max-w-xl rounded-default bg-white p-8 text-center shadow-float ring-1 ring-border">
-        <p className="text-sm font-black uppercase tracking-[0.2em] text-primary">OKEI</p>
+        <p className="text-sm font-black uppercase tracking-[0.2em] text-primary">OKES</p>
         <h1 className="mt-4 text-3xl font-semibold tracking-tight text-foreground">База временно недоступна</h1>
         <p className="mt-4 text-sm leading-6 text-muted-foreground">
           Мы не смогли загрузить данные. Проверь PostgreSQL, `DATABASE_URL` и миграции.

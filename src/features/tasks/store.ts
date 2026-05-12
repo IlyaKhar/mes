@@ -74,7 +74,7 @@ export const useTasksStore = create<TasksState>((set) => ({
     {
       id: "task-5",
       title: "Согласовать демо для совета",
-      description: "Подготовить сценарий демонстрации OKEI и убрать лишние технические детали.",
+      description: "Подготовить сценарий демонстрации OKES и убрать лишние технические детали.",
       assignee: "Елена",
       assigneeInitials: "ЕП",
       assigneeTaskCount: 1,

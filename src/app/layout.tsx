@@ -12,7 +12,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OKEI",
+  title: "OKES",
   description: "Корпоративная экосистема нового поколения"
 };
 

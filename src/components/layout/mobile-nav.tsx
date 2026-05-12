@@ -16,7 +16,7 @@ export function MobileNav() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "ADMIN";
-  const userName = session?.user?.name ?? "Пользователь OKEI";
+  const userName = session?.user?.name ?? "Пользователь OKES";
   const userRole = isAdmin ? "Администратор" : "Сотрудник";
   const RoleIcon = isAdmin ? ShieldCheck : UserRound;
 
@@ -44,17 +44,17 @@ export function MobileNav() {
           aria-describedby={undefined}
           className="fixed inset-y-0 left-0 z-50 flex w-[86vw] max-w-[320px] flex-col bg-background shadow-float focus-visible:outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left lg:hidden"
         >
-          <Dialog.Title className="sr-only">Главное меню OKEI</Dialog.Title>
+          <Dialog.Title className="sr-only">Главное меню OKES</Dialog.Title>
 
           <div className="safe-pt flex items-center justify-between px-4 py-4">
             <Link
               href="/"
-              aria-label="OKEI — на главную"
+              aria-label="OKES — на главную"
               className="flex items-center gap-2"
             >
               <Image
                 src="/logo.png"
-                alt="OKEI"
+                alt="OKES"
                 width={120}
                 height={48}
                 className="h-10 w-auto object-contain"

@@ -13,12 +13,12 @@ export function Sidebar() {
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-[260px] bg-white/78 px-4 py-5 shadow-float backdrop-blur-2xl lg:block">
       <Link
         href="/"
-        aria-label="OKEI — на главную"
+        aria-label="OKES — на главную"
         className="mb-8 flex items-center justify-center rounded-default bg-white p-4 shadow-card ring-1 ring-border transition hover:shadow-float"
       >
         <Image
           src="/logo.png"
-          alt="OKEI"
+          alt="OKES"
           width={180}
           height={180}
           className="h-28 w-auto object-contain"

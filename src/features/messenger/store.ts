@@ -103,7 +103,7 @@ export const useMessengerStore = create<MessengerState>((set) => ({
     },
     {
       id: "msg-3",
-      author: "OKEI",
+      author: "OKES",
       role: "ai",
       kind: "system",
       chatId: "incident-room",
@@ -174,7 +174,7 @@ export const useMessengerStore = create<MessengerState>((set) => ({
     "msg-3": [
       {
         id: "reply-5",
-        author: "OKEI",
+        author: "OKES",
         text: "Сводка обновится после следующего сообщения с решением.",
         time: "10:22"
       }
