@@ -7,7 +7,7 @@ function getSupabaseStorageClient() {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error("Заполни NEXT_PUBLIC_SUPABASE_URL и SUPABASE_SERVICE_ROLE_KEY для CloudSpace");
+    throw new Error("Заполни NEXT_PUBLIC_SUPABASE_URL и SUPABASE_SERVICE_ROLE_KEY для Диска");
   }
 
   return createClient(supabaseUrl, serviceRoleKey, {

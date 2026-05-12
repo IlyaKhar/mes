@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import { Bell, ChevronRight, ShieldCheck } from "lucide-react";
+import { Bell, ChevronRight, ShieldCheck, UserRound } from "lucide-react";
 import { CommandCenter } from "@/components/command-center";
 import { useActiveNavigation } from "@/components/layout/use-active-navigation";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,12 @@ export function TopBar() {
   const activeItem = useActiveNavigation();
   const ActiveIcon = activeItem.icon;
   const userName = session?.user?.name ?? "Пользователь OKEI";
-  const userRole = session?.user?.role === "ADMIN" ? "Администратор" : "Пользователь";
+  const isAdmin = session?.user?.role === "ADMIN";
+  const userRole = isAdmin ? "Администратор" : "Сотрудник";
+  const roleHint = isAdmin
+    ? "Видит данные всех отделов, может управлять пользователями и ролями"
+    : "Работает с данными своего отдела";
+  const RoleIcon = isAdmin ? ShieldCheck : UserRound;
 
   return (
     <header className="sticky top-0 z-20 flex min-h-20 flex-col items-start justify-between gap-4 bg-white/86 px-4 py-4 backdrop-blur-xl sm:px-6 lg:flex-row lg:items-center lg:px-8">
@@ -37,13 +42,16 @@ export function TopBar() {
         <Button variant="soft" size="icon" aria-label="Открыть уведомления">
           <Bell className="size-5" aria-hidden="true" />
         </Button>
-        <div className="flex items-center gap-3 rounded-default bg-white px-4 py-2 shadow-card ring-1 ring-border">
+        <div
+          className="flex items-center gap-3 rounded-default bg-white px-4 py-2 shadow-card ring-1 ring-border"
+          title={roleHint}
+        >
           <div className="flex size-10 items-center justify-center rounded-default bg-neos-accentSoft text-primary">
-            <ShieldCheck className="size-5" aria-hidden="true" />
+            <RoleIcon className="size-5" aria-hidden="true" />
           </div>
           <div>
-            <p className="text-sm font-black">{userName}</p>
-            <p className="text-xs font-semibold text-muted-foreground">{userRole}</p>
+            <p className="text-sm font-bold text-foreground">{userName}</p>
+            <p className="text-xs font-medium text-muted-foreground">{userRole}</p>
           </div>
         </div>
         <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: "/login" })}>

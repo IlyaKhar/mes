@@ -12,6 +12,7 @@ import {
 } from "@/actions/tasks";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { priorityLabels } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 type TaskUser = {
@@ -189,10 +190,10 @@ export function TaskOrbitLive({
           onChange={(event) => setPriority(event.target.value as Priority)}
           className="h-11 rounded-default bg-white px-3 text-sm font-bold outline-none focus:ring-2 focus:ring-primary"
         >
-          <option value="LOW">LOW</option>
-          <option value="MEDIUM">MEDIUM</option>
-          <option value="HIGH">HIGH</option>
-          <option value="CRITICAL">CRITICAL</option>
+          <option value="LOW">{priorityLabels.LOW}</option>
+          <option value="MEDIUM">{priorityLabels.MEDIUM}</option>
+          <option value="HIGH">{priorityLabels.HIGH}</option>
+          <option value="CRITICAL">{priorityLabels.CRITICAL}</option>
         </select>
         <Button type="submit" className="gap-2" disabled={isPending || !title.trim()}>
           <Plus className="size-4" aria-hidden="true" />
@@ -239,7 +240,7 @@ export function TaskOrbitLive({
                             <p className="mt-2 text-sm leading-6 text-muted-foreground">{task.description}</p>
                           ) : null}
                         </div>
-                        <Badge tone={getPriorityTone(task.priority)}>{task.priority}</Badge>
+                        <Badge tone={getPriorityTone(task.priority)}>{priorityLabels[task.priority]}</Badge>
                       </div>
 
                       <div className="space-y-1 text-xs font-bold text-muted-foreground">

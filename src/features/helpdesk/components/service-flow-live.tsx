@@ -11,6 +11,7 @@ import {
 } from "@/actions/helpdesk";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { departmentLabels, priorityLabels, ticketStatusLabels } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 type HelpdeskUser = {
@@ -36,20 +37,7 @@ type HelpdeskTicket = {
   tasks: Array<{ id: string }>;
 };
 
-const departmentLabels: Record<Department, string> = {
-  IT: "IT",
-  HR: "HR",
-  PROCUREMENT: "Снабжение",
-  OPERATIONS: "Операции"
-};
-
-const statusLabels: Record<TicketStatus, string> = {
-  OPEN: "Открыта",
-  IN_PROGRESS: "В работе",
-  WAITING: "Ожидает",
-  RESOLVED: "Решена",
-  CLOSED: "Закрыта"
-};
+const statusLabels = ticketStatusLabels;
 
 function getPriorityTone(priority: Priority) {
   if (priority === "CRITICAL") return "red";
@@ -192,10 +180,10 @@ export function ServiceFlowLive({
           onChange={(event) => setPriority(event.target.value as Priority)}
           className="h-11 rounded-default bg-white px-3 text-sm font-bold outline-none focus:ring-2 focus:ring-primary"
         >
-          <option value="LOW">LOW</option>
-          <option value="MEDIUM">MEDIUM</option>
-          <option value="HIGH">HIGH</option>
-          <option value="CRITICAL">CRITICAL</option>
+          <option value="LOW">{priorityLabels.LOW}</option>
+          <option value="MEDIUM">{priorityLabels.MEDIUM}</option>
+          <option value="HIGH">{priorityLabels.HIGH}</option>
+          <option value="CRITICAL">{priorityLabels.CRITICAL}</option>
         </select>
         {isAdmin ? (
           <select
@@ -278,7 +266,7 @@ export function ServiceFlowLive({
                     <div className="max-w-[360px]">
                       <div className="flex items-center gap-3">
                         <p className="text-sm font-black">#{ticket.number}</p>
-                        <Badge tone={getPriorityTone(ticket.priority)}>{ticket.priority}</Badge>
+                        <Badge tone={getPriorityTone(ticket.priority)}>{priorityLabels[ticket.priority]}</Badge>
                         {ticket.isEscalated ? <Badge tone="red">Эскалация</Badge> : null}
                       </div>
                       <p className="mt-2 text-sm font-black text-foreground">{ticket.title}</p>

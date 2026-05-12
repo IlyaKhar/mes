@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DashboardBriefing } from "@/components/dashboard/dashboard-briefing";
 import { DashboardSkeleton, MetricsWidget } from "@/components/dashboard/db-widgets";
 import { navigationItems } from "@/components/layout/navigation-config";
@@ -28,29 +27,26 @@ export default async function DashboardPage() {
           const Icon = module.icon;
 
           return (
-            <Card key={module.id}>
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="flex size-12 items-center justify-center rounded-default bg-neos-accentSoft text-primary">
-                    <Icon className="size-6" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <CardTitle>{module.title}</CardTitle>
-                    <CardDescription>{module.label}</CardDescription>
-                  </div>
+            <Link
+              key={module.id}
+              href={module.href}
+              className="group block rounded-default bg-white p-5 shadow-card ring-1 ring-border/80 transition-colors hover:ring-primary/50"
+            >
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex size-12 items-center justify-center rounded-default bg-neos-accentSoft text-primary">
+                  <Icon className="size-6" aria-hidden="true" />
                 </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm leading-6 text-muted-foreground">{module.description}</p>
-                <Link
-                  href={module.href}
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-black text-primary transition hover:gap-3"
-                >
-                  Перейти
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </Link>
-              </CardContent>
-            </Card>
+                <div>
+                  <p className="text-base font-bold text-foreground">{module.title}</p>
+                  <p className="text-sm text-muted-foreground">{module.label}</p>
+                </div>
+              </div>
+              <p className="text-sm leading-6 text-muted-foreground">{module.description}</p>
+              <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-primary transition-all group-hover:gap-3">
+                Перейти
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </span>
+            </Link>
           );
         })}
       </section>
