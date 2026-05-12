@@ -220,7 +220,7 @@ export function WikiCoreLive({
   return (
     <div className="space-y-5">
       <section className="rounded-default bg-neos-accentSoft p-4">
-        <p className="text-sm font-black text-primary">Что такое WikiCore?</p>
+        <p className="text-sm font-black text-primary">Что такое База знаний?</p>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Это справочник компании: инструкции, регламенты, FAQ, база знаний. Статьи лежат в PostgreSQL,
           у каждой есть автор, статус, история изменений и список сотрудников, которые её прочитали.

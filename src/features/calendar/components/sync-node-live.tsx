@@ -174,7 +174,7 @@ export function SyncNodeLive({
   return (
     <div className="space-y-5">
       <section className="rounded-default bg-neos-accentSoft p-4">
-        <p className="text-sm font-black text-primary">Как работает SyncNode?</p>
+        <p className="text-sm font-black text-primary">Как работает Календарь?</p>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Это производственный календарь. Событие хранится в PostgreSQL, к нему привязаны участники.
           Перед сохранением система проверяет, не заняты ли участники в другом событии и попадают ли они в рабочую смену.

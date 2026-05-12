@@ -8,7 +8,7 @@ export default async function TasksPage() {
   await requireSession();
 
   return (
-    <Suspense fallback={<DashboardSkeleton title="Task Orbit" />}>
+    <Suspense fallback={<DashboardSkeleton title="Задачи" />}>
       <TasksDbWidget />
     </Suspense>
   );

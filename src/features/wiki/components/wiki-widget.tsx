@@ -52,7 +52,7 @@ export function WikiWidget() {
     <Card id="wiki" className="overflow-hidden">
       <CardHeader>
         <div>
-          <CardTitle>WikiCore</CardTitle>
+          <CardTitle>База знаний</CardTitle>
           <CardDescription>Чистое чтение, дерево знаний и умные ссылки</CardDescription>
         </div>
         <Badge tone="green">{pages.length} статьи</Badge>

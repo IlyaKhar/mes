@@ -23,7 +23,7 @@ export default async function DashboardPage() {
         <MetricsWidget />
       </Suspense>
 
-      <section aria-label="Модули NEOS" className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <section aria-label="Модули OKEI" className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {moduleItems.map((module) => {
           const Icon = module.icon;
 

@@ -53,7 +53,7 @@ async function runQuickCommand(query: string): Promise<CommandCenterResponse> {
   if (command === "task" || command === "задача") {
     const task = await createTaskAction({
       title: payload,
-      description: "Создано через Command Center"
+      description: "Создано через командный центр"
     });
 
     return {
@@ -62,7 +62,7 @@ async function runQuickCommand(query: string): Promise<CommandCenterResponse> {
         id: task.id,
         type: "command",
         title: `Создана задача: ${task.title}`,
-        description: "Task Orbit",
+        description: "Задачи",
         href: "/tasks"
       }
     };
@@ -71,7 +71,7 @@ async function runQuickCommand(query: string): Promise<CommandCenterResponse> {
   if (command === "ticket" || command === "заявка") {
     const ticket = await createTicket({
       title: payload,
-      description: "Создано через Command Center",
+      description: "Создано через командный центр",
       priority: "MEDIUM"
     });
 
@@ -81,7 +81,7 @@ async function runQuickCommand(query: string): Promise<CommandCenterResponse> {
         id: ticket.id,
         type: "command",
         title: `Создана заявка: ${ticket.title}`,
-        description: `Service Flow · #${ticket.number}`,
+        description: `Поддержка · #${ticket.number}`,
         href: "/helpdesk"
       }
     };
@@ -100,7 +100,7 @@ async function runQuickCommand(query: string): Promise<CommandCenterResponse> {
         id: page.id,
         type: "command",
         title: `Создана статья: ${page.title}`,
-        description: "WikiCore",
+        description: "База знаний",
         href: "/wiki"
       }
     };
@@ -198,21 +198,21 @@ export async function commandCenterAction(query: string): Promise<CommandCenterR
       id: item.id,
       type: "task" as const,
       title: item.title,
-      description: `Task Orbit · ${item.status}${item.assignee ? ` · ${item.assignee.name}` : ""}`,
+      description: `Задачи · ${item.status}${item.assignee ? ` · ${item.assignee.name}` : ""}`,
       href: "/tasks"
     })),
     ...wikiPages.map((item) => ({
       id: item.id,
       type: "wiki" as const,
       title: item.title,
-      description: `WikiCore · ${item.status}`,
+      description: `База знаний · ${item.status}`,
       href: "/wiki"
     })),
     ...tickets.map((item) => ({
       id: item.id,
       type: "ticket" as const,
       title: `#${item.number} ${item.title}`,
-      description: `Service Flow · ${item.status} · ${item.priority}`,
+      description: `Поддержка · ${item.status} · ${item.priority}`,
       href: "/helpdesk"
     }))
   ];

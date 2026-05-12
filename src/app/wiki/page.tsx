@@ -8,7 +8,7 @@ export default async function WikiPage() {
   await requireSession();
 
   return (
-    <Suspense fallback={<DashboardSkeleton title="WikiCore" />}>
+    <Suspense fallback={<DashboardSkeleton title="База знаний" />}>
       <WikiDbWidget />
     </Suspense>
   );

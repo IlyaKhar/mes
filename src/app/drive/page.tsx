@@ -8,7 +8,7 @@ export default async function DrivePage() {
   await requireSession();
 
   return (
-    <Suspense fallback={<DashboardSkeleton title="CloudSpace" />}>
+    <Suspense fallback={<DashboardSkeleton title="Диск" />}>
       <DriveDbWidget />
     </Suspense>
   );

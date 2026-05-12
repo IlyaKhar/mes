@@ -10,14 +10,14 @@ export function TopBar() {
   const { data: session } = useSession();
   const activeItem = useActiveNavigation();
   const ActiveIcon = activeItem.icon;
-  const userName = session?.user?.name ?? "Пользователь NEOS";
+  const userName = session?.user?.name ?? "Пользователь OKEI";
   const userRole = session?.user?.role === "ADMIN" ? "Администратор" : "Пользователь";
 
   return (
     <header className="sticky top-0 z-20 flex min-h-20 flex-col items-start justify-between gap-4 bg-white/86 px-4 py-4 backdrop-blur-xl sm:px-6 lg:flex-row lg:items-center lg:px-8">
       <div className="min-w-0">
         <div className="mb-2 flex flex-wrap items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">
-          <span>NEOS</span>
+          <span>OKEI</span>
           <ChevronRight className="size-4 text-primary" aria-hidden="true" />
           <span className="text-primary">{activeItem.label}</span>
         </div>

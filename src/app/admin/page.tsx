@@ -26,7 +26,7 @@ export default async function AdminPage() {
     <div className="space-y-6">
       <section className="rounded-default bg-white p-6 shadow-card ring-1 ring-border">
         <p className="text-sm font-black uppercase tracking-[0.2em] text-primary">Admin</p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground">Панель управления NEOS</h1>
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight text-foreground">Панель управления OKEI</h1>
         <p className="mt-3 text-sm text-muted-foreground">Пользователи, системные метрики и журнал действий.</p>
       </section>
 

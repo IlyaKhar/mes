@@ -159,7 +159,7 @@ export function CloudSpaceLive({
   return (
     <div className="space-y-5">
       <section className="rounded-default bg-neos-accentSoft p-4">
-        <p className="text-sm font-black text-primary">Как работает CloudSpace без S3?</p>
+        <p className="text-sm font-black text-primary">Как работает Диск без S3?</p>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Сейчас это файловый каталог на PostgreSQL: мы сохраняем имя, тип, размер, владельца, ссылку, share-url и версии.
           Сам бинарный файл в облако не отправляется, поэтому S3 и ключи не нужны.
@@ -194,7 +194,7 @@ export function CloudSpaceLive({
             </div>
             <p className="mt-4 text-lg font-black">{isDragActive ? "Отпускай, добавим запись в базу" : "Перетащи файл сюда"}</p>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              PDF, DOC, изображения и любые файлы попадут в CloudSpace как записи PostgreSQL.
+              PDF, DOC, изображения и любые файлы попадут на Диск как записи PostgreSQL.
             </p>
             <label className="mt-5 inline-flex">
               <input type="file" className="sr-only" onChange={handleInputChange} disabled={isPending} />

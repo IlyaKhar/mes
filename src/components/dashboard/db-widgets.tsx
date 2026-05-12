@@ -40,7 +40,7 @@ export async function MetricsWidget() {
     { label: "Сообщений", value: messages, hint: "в корпоративных чатах" },
     { label: "Активных задач", value: tasks, hint: "по всей системе" },
     { label: "Открытых заявок", value: tickets, hint: "ожидают реакции" },
-    { label: "Файлов", value: files, hint: "в CloudSpace" }
+    { label: "Файлов", value: files, hint: "на диске" }
   ];
 
   return (
@@ -113,7 +113,7 @@ export async function MessengerDbWidget() {
     <Card id="messenger">
       <CardHeader>
         <div>
-          <CardTitle>Messenger</CardTitle>
+          <CardTitle>Мессенджер</CardTitle>
           <CardDescription>Реальные чаты и последние сообщения</CardDescription>
         </div>
         <Badge tone="blue">{chats.length} чата</Badge>
@@ -156,7 +156,7 @@ export async function HelpDeskDbWidget() {
     <Card id="helpdesk">
       <CardHeader>
         <div>
-          <CardTitle>Service Flow</CardTitle>
+          <CardTitle>Поддержка</CardTitle>
           <CardDescription>Заявки отдела из PostgreSQL</CardDescription>
         </div>
         <Badge tone="red">{tickets.filter((ticket) => ticket.isEscalated).length} эскалаций</Badge>
@@ -220,7 +220,7 @@ export async function TasksDbWidget() {
     <Card id="tasks">
       <CardHeader>
         <div>
-          <CardTitle>Task Orbit</CardTitle>
+          <CardTitle>Задачи</CardTitle>
           <CardDescription>Задачи отдела с реальными статусами</CardDescription>
         </div>
         <Badge tone="violet">{tasks.length} задач</Badge>
@@ -321,7 +321,7 @@ export async function CalendarDbWidget() {
     <Card id="calendar">
       <CardHeader>
         <div>
-          <CardTitle>SyncNode</CardTitle>
+          <CardTitle>Календарь</CardTitle>
           <CardDescription>События и участники из базы</CardDescription>
         </div>
         <Badge tone="cyan">{events.length} событий</Badge>
@@ -383,7 +383,7 @@ export async function DriveDbWidget() {
     <Card id="drive">
       <CardHeader>
         <div>
-          <CardTitle>CloudSpace</CardTitle>
+          <CardTitle>Диск</CardTitle>
           <CardDescription>Файлы и владельцы из PostgreSQL</CardDescription>
         </div>
         <Badge tone="blue">{files.length} файлов</Badge>
@@ -447,7 +447,7 @@ export async function WikiDbWidget() {
     <Card id="wiki">
       <CardHeader>
         <div>
-          <CardTitle>WikiCore</CardTitle>
+          <CardTitle>База знаний</CardTitle>
           <CardDescription>Статьи, авторы и прочтения из базы</CardDescription>
         </div>
         <Badge tone="green">{pages.length} статей</Badge>

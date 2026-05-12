@@ -53,7 +53,7 @@ export function HelpDeskWidget() {
     <Card id="helpdesk" className="overflow-hidden">
       <CardHeader>
         <div>
-          <CardTitle>Service Flow</CardTitle>
+          <CardTitle>Поддержка</CardTitle>
           <CardDescription>Чистая очередь заявок, категории и живой SLA</CardDescription>
         </div>
         <Badge tone="red">

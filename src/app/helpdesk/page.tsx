@@ -8,7 +8,7 @@ export default async function HelpdeskPage() {
   await requireSession();
 
   return (
-    <Suspense fallback={<DashboardSkeleton title="Service Flow" />}>
+    <Suspense fallback={<DashboardSkeleton title="Поддержка" />}>
       <HelpDeskDbWidget />
     </Suspense>
   );

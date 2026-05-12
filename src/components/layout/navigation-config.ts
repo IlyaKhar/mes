@@ -13,7 +13,7 @@ export const navigationItems = [
   {
     id: "dashboard",
     label: "Обзор",
-    title: "Операционный центр NEOS",
+    title: "Операционный центр OKEI",
     description: "Пульс компании, метрики и быстрый доступ ко всем модулям",
     href: "/",
     icon: Home
@@ -21,7 +21,7 @@ export const navigationItems = [
   {
     id: "messenger",
     label: "Мессенджер",
-    title: "Messenger",
+    title: "Мессенджер",
     description: "Чаты, группы, участники и сообщения из базы",
     href: "/messenger",
     icon: MessageSquareText
@@ -29,7 +29,7 @@ export const navigationItems = [
   {
     id: "helpdesk",
     label: "Поддержка",
-    title: "Service Flow",
+    title: "Поддержка",
     description: "Заявки отдела, SLA, эскалации и агенты поддержки",
     href: "/helpdesk",
     icon: HelpCircle
@@ -37,7 +37,7 @@ export const navigationItems = [
   {
     id: "tasks",
     label: "Задачи",
-    title: "Task Orbit",
+    title: "Задачи",
     description: "Задачи, исполнители, статусы, таймеры и связь с заявками",
     href: "/tasks",
     icon: CheckSquare
@@ -45,7 +45,7 @@ export const navigationItems = [
   {
     id: "calendar",
     label: "Календарь",
-    title: "SyncNode",
+    title: "Календарь",
     description: "События, участники, смены и проверка пересечений",
     href: "/calendar",
     icon: CalendarDays
@@ -53,15 +53,15 @@ export const navigationItems = [
   {
     id: "drive",
     label: "Диск",
-    title: "CloudSpace",
+    title: "Диск",
     description: "Файлы, владельцы, версии, шаринг и скачивание",
     href: "/drive",
     icon: FolderOpen
   },
   {
     id: "wiki",
-    label: "Вики",
-    title: "WikiCore",
+    label: "База знаний",
+    title: "База знаний",
     description: "Справочник, статьи, авторы, прочтения и история изменений",
     href: "/wiki",
     icon: Workflow

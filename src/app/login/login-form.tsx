@@ -44,7 +44,7 @@ export function LoginForm() {
         <div className="mb-8 flex flex-col items-center gap-4 text-center">
           <Image
             src="/logo.png"
-            alt="NEOS"
+            alt="OKEI"
             width={140}
             height={140}
             className="size-32 object-contain"

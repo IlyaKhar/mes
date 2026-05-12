@@ -44,7 +44,7 @@ export function TasksWidget() {
       >
         <CardHeader>
           <div>
-            <CardTitle>Task Orbit</CardTitle>
+            <CardTitle>Задачи</CardTitle>
             <CardDescription>Канбан, приоритеты и загрузка исполнителей</CardDescription>
           </div>
           <Badge tone="violet">{tasks.length} активных</Badge>

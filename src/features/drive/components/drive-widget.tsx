@@ -56,7 +56,7 @@ export function DriveWidget() {
     <Card id="drive" className="overflow-hidden">
       <CardHeader>
         <div>
-          <CardTitle>CloudSpace</CardTitle>
+          <CardTitle>Диск</CardTitle>
           <CardDescription>Файлы, версии, быстрый шаринг и drag-and-drop</CardDescription>
         </div>
         <Badge tone="blue">{files.length} файла</Badge>
@@ -95,7 +95,7 @@ export function DriveWidget() {
               {isDragActive ? "Отпускай, файл уже почти в облаке" : "Перетащите файлы сюда"}
             </p>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              PDF, DOC и изображения автоматически попадут в общий CloudSpace.
+              PDF, DOC и изображения автоматически попадут в общий Диск.
             </p>
           </div>
 

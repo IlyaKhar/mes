@@ -67,7 +67,7 @@ export function CalendarWidget() {
     <Card id="calendar" className="overflow-hidden">
       <CardHeader>
         <div>
-          <CardTitle>SyncNode</CardTitle>
+          <CardTitle>Календарь</CardTitle>
           <CardDescription>Месяц, смены, офисная загрузка и защита от пересечений</CardDescription>
         </div>
         <Badge tone="cyan">Апрель 2026</Badge>
@@ -180,7 +180,7 @@ export function CalendarWidget() {
             <p className="text-xs font-black uppercase tracking-[0.18em] text-primary">Новая встреча</p>
             <h3 className="mt-2 text-lg font-black">Проверка пересечений</h3>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Выберите день и время. Если слот занят в текущем режиме, SyncNode заблокирует сохранение.
+              Выберите день и время. Если слот занят в текущем режиме, Календарь заблокирует сохранение.
             </p>
 
             <div className="mt-5 space-y-4">

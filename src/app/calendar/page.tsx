@@ -8,7 +8,7 @@ export default async function CalendarPage() {
   await requireSession();
 
   return (
-    <Suspense fallback={<DashboardSkeleton title="SyncNode" />}>
+    <Suspense fallback={<DashboardSkeleton title="Календарь" />}>
       <CalendarDbWidget />
     </Suspense>
   );

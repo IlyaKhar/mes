@@ -161,7 +161,7 @@ export function ServiceFlowLive({
   return (
     <div className="space-y-5">
       <div className="rounded-default bg-neos-accentSoft p-4">
-        <p className="text-sm font-black text-primary">Что такое Service Flow?</p>
+        <p className="text-sm font-black text-primary">Что такое Поддержка?</p>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Это очередь внутренних заявок: доступы, закупки, поломки, биллинг, HR-вопросы. У каждой заявки есть SLA-дедлайн,
           приоритет, отдел, ответственный агент и статус. Если срок прошел, заявка становится эскалированной.

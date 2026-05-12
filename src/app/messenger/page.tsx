@@ -8,7 +8,7 @@ export default async function MessengerPage() {
   await requireSession();
 
   return (
-    <Suspense fallback={<DashboardSkeleton title="Messenger" />}>
+    <Suspense fallback={<DashboardSkeleton title="Мессенджер" />}>
       <MessengerDbWidget />
     </Suspense>
   );

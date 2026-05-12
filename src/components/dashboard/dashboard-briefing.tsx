@@ -165,7 +165,7 @@ export async function DashboardBriefing() {
       id: `ticket-${ticket.id}`,
       type: "ticket",
       title: `#${ticket.number} ${ticket.title}`,
-      description: `Service Flow · ${ticket.creator?.name ?? "Система"}`,
+      description: `Поддержка · ${ticket.creator?.name ?? "Система"}`,
       href: "/helpdesk" as Route,
       date: ticket.updatedAt,
       actor: ticket.creator?.name
@@ -174,7 +174,7 @@ export async function DashboardBriefing() {
       id: `task-${task.id}`,
       type: "task",
       title: task.title,
-      description: `Task Orbit · ${task.assignee?.name ?? task.creator?.name ?? "—"}`,
+      description: `Задачи · ${task.assignee?.name ?? task.creator?.name ?? "—"}`,
       href: "/tasks" as Route,
       date: task.updatedAt,
       actor: task.assignee?.name ?? task.creator?.name
@@ -183,7 +183,7 @@ export async function DashboardBriefing() {
       id: `file-${file.id}`,
       type: "file",
       title: file.name,
-      description: `CloudSpace · ${file.owner?.name ?? ""}`,
+      description: `Диск · ${file.owner?.name ?? ""}`,
       href: "/drive" as Route,
       date: file.updatedAt,
       actor: file.owner?.name
@@ -192,7 +192,7 @@ export async function DashboardBriefing() {
       id: `message-${message.id}`,
       type: "message",
       title: message.chat.title ?? "Личный чат",
-      description: `Messenger · ${message.user.name}: ${message.body.slice(0, 60)}`,
+      description: `Мессенджер · ${message.user.name}: ${message.body.slice(0, 60)}`,
       href: "/messenger" as Route,
       date: message.createdAt,
       actor: message.user.name
