@@ -13,8 +13,8 @@ export const navigationItems = [
   {
     id: "dashboard",
     label: "Обзор",
-    title: "Операционный центр OKEI",
-    description: "Пульс компании, метрики и быстрый доступ ко всем модулям",
+    title: "Операционный центр",
+    description: "Метрики компании и быстрый доступ ко всем модулям",
     href: "/",
     icon: Home
   },
@@ -22,7 +22,7 @@ export const navigationItems = [
     id: "messenger",
     label: "Мессенджер",
     title: "Мессенджер",
-    description: "Чаты, группы, участники и сообщения из базы",
+    description: "Чаты, группы и обсуждения команды",
     href: "/messenger",
     icon: MessageSquareText
   },
@@ -30,7 +30,7 @@ export const navigationItems = [
     id: "helpdesk",
     label: "Поддержка",
     title: "Поддержка",
-    description: "Заявки отдела, SLA, эскалации и агенты поддержки",
+    description: "Заявки с дедлайнами и эскалацией",
     href: "/helpdesk",
     icon: HelpCircle
   },
@@ -38,7 +38,7 @@ export const navigationItems = [
     id: "tasks",
     label: "Задачи",
     title: "Задачи",
-    description: "Задачи, исполнители, статусы, таймеры и связь с заявками",
+    description: "Канбан, исполнители и таймеры",
     href: "/tasks",
     icon: CheckSquare
   },
@@ -46,7 +46,7 @@ export const navigationItems = [
     id: "calendar",
     label: "Календарь",
     title: "Календарь",
-    description: "События, участники, смены и проверка пересечений",
+    description: "События, смены и проверка пересечений",
     href: "/calendar",
     icon: CalendarDays
   },
@@ -54,7 +54,7 @@ export const navigationItems = [
     id: "drive",
     label: "Диск",
     title: "Диск",
-    description: "Файлы, владельцы, версии, шаринг и скачивание",
+    description: "Файлы с версиями и общим доступом",
     href: "/drive",
     icon: FolderOpen
   },
@@ -62,7 +62,7 @@ export const navigationItems = [
     id: "wiki",
     label: "База знаний",
     title: "База знаний",
-    description: "Справочник, статьи, авторы, прочтения и история изменений",
+    description: "Статьи, регламенты и история правок",
     href: "/wiki",
     icon: Workflow
   }

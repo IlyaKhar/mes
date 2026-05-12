@@ -278,7 +278,7 @@ export async function DashboardBriefing() {
               ? `Ближайшая встреча — «${nextEvent.title}» ${formatRelative(nextEvent.startsAt)}.`
               : myOpenTasks > 0
                 ? `На тебе ${myOpenTasks} ${myOpenTasks === 1 ? "задача" : "задач"} в работе. Начни день с самого приоритетного.`
-                : "Сегодня свободно: можно прибраться в Wiki или закрыть старые задачи."}
+                : "Сегодня свободно: можно навести порядок в Базе знаний или закрыть старые задачи."}
           </p>
 
           <div className="mt-6 flex items-center gap-4 text-sm">

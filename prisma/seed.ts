@@ -30,7 +30,7 @@ async function main() {
   const [admin, anna, ilya, maria, oleg] = await Promise.all([
     prisma.user.create({
       data: {
-        name: "Администратор NEOS",
+        name: "Администратор OKEI",
         email: "admin@neos.local",
         passwordHash,
         role: "ADMIN",
@@ -260,7 +260,7 @@ async function main() {
     ]
   });
 
-  console.log("NEOS seed completed");
+  console.log("OKEI seed completed");
   console.log("Admin: admin@neos.local / Neos12345!");
   console.log("User: anna@neos.local / Neos12345!");
 }
