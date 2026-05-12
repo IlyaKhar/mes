@@ -217,18 +217,32 @@ export function CommandCenter() {
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger asChild>
-        <Button variant="ghost" className="w-full justify-start bg-white shadow-card ring-1 ring-border sm:w-[320px]">
-          <Search className="mr-3 size-4 text-primary" aria-hidden="true" />
-          <span className="text-muted-foreground">Поиск или команда</span>
-          <kbd className="ml-auto rounded-md bg-neos-accentSoft px-2 py-1 text-xs font-black text-primary">
-            ⌘K
-          </kbd>
-        </Button>
-      </Dialog.Trigger>
+      <Button
+        variant="soft"
+        size="icon"
+        aria-label="Открыть поиск и команды"
+        className="shrink-0 lg:hidden"
+        onClick={() => setOpen(true)}
+      >
+        <Search className="size-5" aria-hidden="true" />
+      </Button>
+      <Button
+        variant="ghost"
+        className="hidden w-[320px] justify-start bg-white shadow-card ring-1 ring-border lg:flex"
+        onClick={() => setOpen(true)}
+      >
+        <Search className="mr-3 size-4 text-primary" aria-hidden="true" />
+        <span className="text-muted-foreground">Поиск или команда</span>
+        <kbd className="ml-auto rounded-md bg-neos-accentSoft px-2 py-1 text-xs font-black text-primary">
+          ⌘K
+        </kbd>
+      </Button>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-white/70 backdrop-blur-md" />
-        <Dialog.Content className="fixed left-1/2 top-24 z-50 w-[calc(100vw-2rem)] -translate-x-1/2 rounded-default bg-white p-3 shadow-float ring-1 ring-border focus-visible:outline-none sm:w-[640px]">
+        <Dialog.Content
+          aria-describedby={undefined}
+          className="fixed inset-x-2 top-4 z-50 max-h-[calc(100dvh-2rem)] overflow-hidden rounded-default bg-white p-3 shadow-float ring-1 ring-border focus-visible:outline-none sm:inset-x-auto sm:left-1/2 sm:top-24 sm:w-[640px] sm:-translate-x-1/2"
+        >
           <Dialog.Title className="sr-only">Центр команд</Dialog.Title>
           <Command className="overflow-hidden rounded-default bg-white">
             <div className="flex items-center gap-3 rounded-default bg-neos-accentSoft px-4">
@@ -246,7 +260,7 @@ export function CommandCenter() {
                 className="h-14 flex-1 bg-transparent text-base font-semibold outline-none placeholder:text-muted-foreground"
               />
             </div>
-            <Command.List className="max-h-[420px] overflow-y-auto p-2">
+            <Command.List className="max-h-[calc(100dvh-12rem)] overflow-y-auto p-2 sm:max-h-[420px]">
               <Command.Empty className="px-4 py-8 text-center text-sm font-semibold text-muted-foreground">
                 Ничего не найдено. Попробуй другую команду.
               </Command.Empty>

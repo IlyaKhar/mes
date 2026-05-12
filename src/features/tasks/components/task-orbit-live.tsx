@@ -215,12 +215,15 @@ export function TaskOrbitLive({
         ) : null}
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-3">
+      <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 sm:pb-0 xl:grid xl:gap-4 xl:overflow-visible xl:grid-cols-3">
         {columns.map((column) => {
           const columnTasks = visibleTasks.filter((task) => task.status === column.status);
 
           return (
-            <section key={column.status} className="rounded-default bg-neos-accentSoft p-4">
+            <section
+              key={column.status}
+              className="w-[85vw] shrink-0 snap-start rounded-default bg-neos-accentSoft p-4 sm:w-[60vw] md:w-[45vw] xl:w-auto xl:shrink"
+            >
               <div className="mb-4 flex items-center justify-between">
                 <p className="text-sm font-black text-primary">{column.label}</p>
                 <Badge tone="blue">{columnTasks.length}</Badge>

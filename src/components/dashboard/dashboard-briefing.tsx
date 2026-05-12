@@ -249,7 +249,7 @@ export async function DashboardBriefing() {
   return (
     <section
       aria-label="Персональный брифинг"
-      className="relative overflow-hidden rounded-default bg-white p-6 shadow-float ring-1 ring-border"
+      className="relative overflow-hidden rounded-default bg-white p-4 shadow-float ring-1 ring-border sm:p-6"
     >
       <div
         aria-hidden="true"
@@ -260,9 +260,9 @@ export async function DashboardBriefing() {
         className="pointer-events-none absolute -right-32 -top-24 size-72 rounded-full bg-primary/10 blur-3xl"
       />
 
-      <div className="relative grid gap-6 lg:grid-cols-12">
+      <div className="relative grid gap-5 lg:grid-cols-12 lg:gap-6">
         <div className="lg:col-span-7">
-          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.24em] text-primary">
+          <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary sm:text-xs sm:tracking-[0.24em]">
             <span className="relative flex size-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex size-2 rounded-full bg-primary" />
@@ -270,10 +270,10 @@ export async function DashboardBriefing() {
             Брифинг · {formattedDate}
           </div>
 
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-foreground">
+          <h1 className="mt-3 text-2xl font-semibold tracking-tight text-foreground sm:mt-4 sm:text-4xl">
             {greeting}, {user.name.split(" ")[0]}
           </h1>
-          <p className="mt-3 max-w-xl text-base leading-7 text-muted-foreground">
+          <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground sm:mt-3 sm:text-base sm:leading-7">
             {nextEvent
               ? `Ближайшая встреча — «${nextEvent.title}» ${formatRelative(nextEvent.startsAt)}.`
               : myOpenTasks > 0
@@ -281,7 +281,7 @@ export async function DashboardBriefing() {
                 : "Сегодня свободно: можно навести порядок в Базе знаний или закрыть старые задачи."}
           </p>
 
-          <div className="mt-6 flex items-center gap-4 text-sm">
+          <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:mt-6 sm:gap-4 sm:text-sm">
             <LiveClock />
             <span className="text-muted-foreground">·</span>
             <span className="font-bold text-muted-foreground">
@@ -290,20 +290,24 @@ export async function DashboardBriefing() {
           </div>
         </div>
 
-        <div className="grid gap-3 lg:col-span-5 lg:grid-cols-3">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 lg:col-span-5">
           {personalKpis.map((kpi) => (
             <Link
               key={kpi.label}
               href={kpi.href}
-              className={`group relative overflow-hidden rounded-default bg-gradient-to-br ${kpi.tone} p-4 transition hover:-translate-y-0.5`}
+              className={`group relative overflow-hidden rounded-default bg-gradient-to-br ${kpi.tone} p-3 transition active:scale-[0.98] sm:p-4`}
             >
-              <p className="font-mono text-3xl font-bold tracking-tight tabular-nums text-foreground">
+              <p className="font-mono text-2xl font-bold tracking-tight tabular-nums text-foreground sm:text-3xl">
                 {kpi.value}
               </p>
-              <p className="mt-2 text-xs font-black uppercase tracking-wide text-foreground/80">{kpi.label}</p>
-              <p className="mt-2 line-clamp-2 text-xs font-semibold text-foreground/60">{kpi.hint}</p>
+              <p className="mt-1 text-[10px] font-black uppercase tracking-wide text-foreground/80 sm:mt-2 sm:text-xs">
+                {kpi.label}
+              </p>
+              <p className="mt-1 line-clamp-2 text-[10px] font-semibold text-foreground/60 sm:mt-2 sm:text-xs">
+                {kpi.hint}
+              </p>
               <ArrowRight
-                className="absolute right-3 top-3 size-4 opacity-0 transition group-hover:opacity-100"
+                className="absolute right-2 top-2 size-3.5 opacity-0 transition group-hover:opacity-100 sm:right-3 sm:top-3 sm:size-4"
                 aria-hidden="true"
               />
             </Link>
@@ -311,8 +315,8 @@ export async function DashboardBriefing() {
         </div>
       </div>
 
-      <div className="relative mt-6 grid gap-4 lg:grid-cols-12">
-        <article className="rounded-default bg-neos-accentSoft p-5 lg:col-span-5">
+      <div className="relative mt-5 grid gap-3 sm:mt-6 sm:gap-4 lg:grid-cols-12">
+        <article className="rounded-default bg-neos-accentSoft p-4 sm:p-5 lg:col-span-5">
           <div className="flex items-center justify-between">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Ближайшее событие</p>
             <CalendarClock className="size-4 text-primary" aria-hidden="true" />
@@ -354,7 +358,7 @@ export async function DashboardBriefing() {
           )}
         </article>
 
-        <article className="rounded-default bg-white p-5 ring-1 ring-border lg:col-span-7">
+        <article className="rounded-default bg-white p-4 ring-1 ring-border sm:p-5 lg:col-span-7">
           <div className="flex items-center justify-between">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Поток активности</p>
             <Clock3 className="size-4 text-primary" aria-hidden="true" />

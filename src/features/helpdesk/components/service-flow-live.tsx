@@ -203,11 +203,17 @@ export function ServiceFlowLive({
       </form>
 
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="mr-1 flex size-10 items-center justify-center rounded-full bg-neos-accentSoft text-primary">
+        <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:flex-wrap sm:px-0 sm:pb-0">
+          <div className="hidden size-10 shrink-0 items-center justify-center rounded-full bg-neos-accentSoft text-primary sm:flex">
             <SlidersHorizontal className="size-5" aria-hidden="true" />
           </div>
-          <Button type="button" variant={activeDepartment === "ALL" ? "default" : "soft"} size="sm" onClick={() => setActiveDepartment("ALL")}>
+          <Button
+            type="button"
+            variant={activeDepartment === "ALL" ? "default" : "soft"}
+            size="sm"
+            className="shrink-0"
+            onClick={() => setActiveDepartment("ALL")}
+          >
             Все отделы
           </Button>
           {Object.entries(departmentLabels).map(([value, label]) => (
@@ -216,14 +222,21 @@ export function ServiceFlowLive({
               type="button"
               variant={activeDepartment === value ? "default" : "soft"}
               size="sm"
+              className="shrink-0"
               onClick={() => setActiveDepartment(value as Department)}
             >
               {label}
             </Button>
           ))}
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Button type="button" variant={activeStatus === "ALL" ? "default" : "soft"} size="sm" onClick={() => setActiveStatus("ALL")}>
+        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:flex-wrap sm:px-0 sm:pb-0">
+          <Button
+            type="button"
+            variant={activeStatus === "ALL" ? "default" : "soft"}
+            size="sm"
+            className="shrink-0"
+            onClick={() => setActiveStatus("ALL")}
+          >
             Все статусы
           </Button>
           {Object.entries(statusLabels).map(([value, label]) => (
@@ -232,6 +245,7 @@ export function ServiceFlowLive({
               type="button"
               variant={activeStatus === value ? "default" : "soft"}
               size="sm"
+              className="shrink-0"
               onClick={() => setActiveStatus(value as TicketStatus)}
             >
               {label}
@@ -240,7 +254,77 @@ export function ServiceFlowLive({
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-default bg-white shadow-card">
+      <ul className="space-y-3 md:hidden">
+        {visibleTickets.map((ticket) => {
+          const sla = getSlaState(ticket.slaDueAt, ticket.isEscalated);
+          const canDelete = isAdmin || ticket.creatorId === currentUserId || ticket.supportAgentId === currentUserId;
+
+          return (
+            <li key={ticket.id} className="rounded-default bg-white p-4 shadow-card ring-1 ring-border/70">
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-mono text-sm font-black tabular-nums text-foreground">#{ticket.number}</p>
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <Badge tone={getPriorityTone(ticket.priority)}>{priorityLabels[ticket.priority]}</Badge>
+                  {ticket.isEscalated ? <Badge tone="red">Эскалация</Badge> : null}
+                </div>
+              </div>
+              <p className="mt-2 text-sm font-bold text-foreground">{ticket.title}</p>
+              <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{ticket.description}</p>
+
+              <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                <Badge tone={ticket.department === "IT" ? "blue" : ticket.department === "HR" ? "violet" : "cyan"}>
+                  {departmentLabels[ticket.department]}
+                </Badge>
+                <span className="text-xs font-bold text-muted-foreground">Автор: {ticket.creator.name}</span>
+              </div>
+
+              <div className="mt-3 flex items-center gap-2 text-xs font-bold">
+                <CheckCircle2 className="size-4 text-primary" aria-hidden="true" />
+                <span>{statusLabels[ticket.status]}</span>
+                <span className="ml-auto text-muted-foreground">{sla.label}</span>
+              </div>
+              <div className="mt-2 h-1 overflow-hidden rounded-full bg-neos-accentSoft">
+                <div className={cn("h-full rounded-full transition-all", sla.className)} style={{ width: `${sla.percent}%` }} />
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <select
+                  value={ticket.supportAgentId ?? ""}
+                  onChange={(event) => assignAgent(ticket.id, event.target.value)}
+                  aria-label="Назначить агента"
+                  className="h-10 rounded-default bg-neos-accentSoft px-2 text-xs font-bold outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="">Агент: не назначен</option>
+                  {users.map((user) => (
+                    <option key={user.id} value={user.id}>{user.name}</option>
+                  ))}
+                </select>
+                <select
+                  value={ticket.status}
+                  onChange={(event) => updateStatus(ticket.id, event.target.value as TicketStatus)}
+                  aria-label="Сменить статус"
+                  className="h-10 rounded-default bg-neos-accentSoft px-2 text-xs font-bold outline-none focus:ring-2 focus:ring-primary"
+                >
+                  {Object.entries(statusLabels).map(([value, label]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between text-xs">
+                <p className="font-bold text-primary">Задач: {ticket.tasks.length}</p>
+                {canDelete ? (
+                  <Button type="button" variant="ghost" size="icon" onClick={() => deleteTicket(ticket.id)} aria-label="Удалить заявку">
+                    <Trash2 className="size-4" aria-hidden="true" />
+                  </Button>
+                ) : null}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+
+      <div className="hidden overflow-x-auto rounded-default bg-white shadow-card md:block">
         <table className="w-full min-w-[980px] border-separate border-spacing-0 text-left">
           <thead className="bg-white text-xs font-black uppercase tracking-[0.12em] text-primary">
             <tr>

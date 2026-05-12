@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
@@ -14,6 +14,14 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "OKEI",
   description: "Корпоративная экосистема нового поколения"
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#f6f3ec"
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -3,6 +3,7 @@
 import { signOut, useSession } from "next-auth/react";
 import { Bell, ChevronRight, ShieldCheck, UserRound } from "lucide-react";
 import { CommandCenter } from "@/components/command-center";
+import { MobileNav } from "@/components/layout/mobile-nav";
 import { useActiveNavigation } from "@/components/layout/use-active-navigation";
 import { Button } from "@/components/ui/button";
 
@@ -19,25 +20,45 @@ export function TopBar() {
   const RoleIcon = isAdmin ? ShieldCheck : UserRound;
 
   return (
-    <header className="sticky top-0 z-20 flex min-h-20 flex-col items-start justify-between gap-4 bg-white/86 px-4 py-4 backdrop-blur-xl sm:px-6 lg:flex-row lg:items-center lg:px-8">
-      <div className="min-w-0">
-        <div className="mb-2 flex flex-wrap items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">
-          <span>OKEI</span>
-          <ChevronRight className="size-4 text-primary" aria-hidden="true" />
-          <span className="text-primary">{activeItem.label}</span>
+    <header className="safe-pt sticky top-0 z-20 flex min-h-16 flex-col items-stretch gap-3 bg-white/86 px-4 py-3 backdrop-blur-xl sm:px-6 lg:min-h-20 lg:flex-row lg:items-center lg:justify-between lg:gap-4 lg:px-8 lg:py-4">
+      <div className="flex items-center gap-3 min-w-0">
+        <MobileNav />
+
+        <div className="min-w-0 flex-1">
+          <div className="mb-1 hidden flex-wrap items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-muted-foreground sm:flex">
+            <span>OKEI</span>
+            <ChevronRight className="size-4 text-primary" aria-hidden="true" />
+            <span className="text-primary">{activeItem.label}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="hidden size-11 shrink-0 items-center justify-center rounded-default bg-neos-accentSoft text-primary sm:flex">
+              <ActiveIcon className="size-5" aria-hidden="true" />
+            </div>
+            <div className="min-w-0">
+              <h1 className="truncate text-lg font-semibold tracking-tight text-foreground sm:text-2xl">
+                {activeItem.title}
+              </h1>
+              <p className="mt-0.5 line-clamp-1 text-xs font-medium text-muted-foreground sm:text-sm">
+                {activeItem.description}
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex size-11 shrink-0 items-center justify-center rounded-default bg-neos-accentSoft text-primary">
-            <ActiveIcon className="size-5" aria-hidden="true" />
-          </div>
-          <div className="min-w-0">
-            <h1 className="truncate text-2xl font-semibold tracking-tight text-foreground">{activeItem.title}</h1>
-            <p className="mt-1 line-clamp-1 text-sm font-medium text-muted-foreground">{activeItem.description}</p>
-          </div>
+
+        <div className="flex items-center gap-2 lg:hidden">
+          <CommandCenter />
+          <Button
+            variant="soft"
+            size="icon"
+            aria-label="Открыть уведомления"
+            className="shrink-0"
+          >
+            <Bell className="size-5" aria-hidden="true" />
+          </Button>
         </div>
       </div>
 
-      <div className="flex w-full flex-wrap items-center gap-3 lg:w-auto">
+      <div className="hidden w-full flex-wrap items-center gap-3 lg:flex lg:w-auto">
         <CommandCenter />
         <Button variant="soft" size="icon" aria-label="Открыть уведомления">
           <Bell className="size-5" aria-hidden="true" />

@@ -78,7 +78,7 @@ export default async function AdminPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="overflow-hidden rounded-default shadow-card">
+          <div className="hidden overflow-hidden rounded-default shadow-card md:block">
             <table className="w-full text-left text-sm">
               <thead className="bg-neos-accentSoft text-xs font-black uppercase text-primary">
                 <tr>
@@ -148,6 +148,64 @@ export default async function AdminPage() {
               </tbody>
             </table>
           </div>
+
+          <ul className="space-y-3 md:hidden">
+            {users.map((user) => (
+              <li
+                key={user.id}
+                className="rounded-default bg-white p-4 shadow-card ring-1 ring-border/70"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-bold text-foreground">{user.name}</p>
+                    <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+                  </div>
+                  <Badge tone={user.isBanned ? "red" : "green"}>
+                    {user.isBanned ? "Заблокирован" : "Активен"}
+                  </Badge>
+                </div>
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <form
+                    action={updateUserRoleAction.bind(null, {
+                      userId: user.id,
+                      role: user.role === "ADMIN" ? "USER" : "ADMIN"
+                    })}
+                  >
+                    <button
+                      type="submit"
+                      className="min-h-[36px] rounded-full bg-neos-accentSoft px-3 text-xs font-bold text-primary active:scale-95"
+                    >
+                      {roleLabels[user.role]}
+                    </button>
+                  </form>
+                  <form
+                    action={updateUserDepartmentAction.bind(null, {
+                      userId: user.id,
+                      department: nextDepartment(user.department)
+                    })}
+                  >
+                    <button
+                      type="submit"
+                      className="min-h-[36px] rounded-full bg-neos-accentSoft px-3 text-xs font-bold text-primary active:scale-95"
+                    >
+                      {departmentLabels[user.department]}
+                    </button>
+                  </form>
+                  <form
+                    action={setUserBannedAction.bind(null, { userId: user.id, isBanned: !user.isBanned })}
+                    className="ml-auto"
+                  >
+                    <button
+                      type="submit"
+                      className="min-h-[36px] px-1 text-xs font-bold text-primary underline-offset-2 active:underline"
+                    >
+                      {user.isBanned ? "Разблокировать" : "Заблокировать"}
+                    </button>
+                  </form>
+                </div>
+              </li>
+            ))}
+          </ul>
         </CardContent>
       </Card>
 
