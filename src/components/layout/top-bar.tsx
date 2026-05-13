@@ -1,10 +1,11 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import { Bell, ChevronRight, ShieldCheck, UserRound } from "lucide-react";
+import { ChevronRight, ShieldCheck, UserRound } from "lucide-react";
 import { CommandCenter } from "@/components/command-center";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { useActiveNavigation } from "@/components/layout/use-active-navigation";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { Button } from "@/components/ui/button";
 
 export function TopBar() {
@@ -47,22 +48,13 @@ export function TopBar() {
 
         <div className="flex items-center gap-2 lg:hidden">
           <CommandCenter />
-          <Button
-            variant="soft"
-            size="icon"
-            aria-label="Открыть уведомления"
-            className="shrink-0"
-          >
-            <Bell className="size-5" aria-hidden="true" />
-          </Button>
+          <NotificationBell />
         </div>
       </div>
 
       <div className="hidden w-full flex-wrap items-center gap-3 lg:flex lg:w-auto">
         <CommandCenter />
-        <Button variant="soft" size="icon" aria-label="Открыть уведомления">
-          <Bell className="size-5" aria-hidden="true" />
-        </Button>
+        <NotificationBell />
         <div
           className="flex items-center gap-3 rounded-default bg-white px-4 py-2 shadow-card ring-1 ring-border"
           title={roleHint}

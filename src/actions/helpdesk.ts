@@ -4,6 +4,8 @@ import type { Department, Priority, TicketStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { requireSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { createNotification, createNotifications } from "@/lib/notifications";
+import { priorityLabels } from "@/lib/i18n";
 
 const priorityDeadlineHours: Record<Priority, number> = {
   CRITICAL: 1,
@@ -41,6 +43,26 @@ export async function createTicket(input: {
     }
   });
 
+  try {
+    const admins = await db.user.findMany({
+      where: { role: "ADMIN", isBanned: false, id: { not: user.id } },
+      select: { id: true }
+    });
+
+    await createNotifications(
+      admins.map((admin) => ({
+        recipientId: admin.id,
+        actorId: user.id,
+        type: "TICKET_ASSIGNED",
+        title: `Новая заявка #${ticket.number}`,
+        body: `${priorityLabels[ticket.priority]} · ${ticket.title}`,
+        href: "/helpdesk"
+      }))
+    );
+  } catch (error) {
+    console.warn("Ticket notification skipped:", error);
+  }
+
   revalidatePath("/");
   return ticket;
 }
@@ -51,12 +73,27 @@ export async function assignTicketOwnerAction(input: {
   ticketId: string;
   supportAgentId: string | null;
 }) {
-  await requireSession();
+  const actor = await requireSession();
 
   const ticket = await db.ticket.update({
     where: { id: input.ticketId },
     data: { supportAgentId: input.supportAgentId || null }
   });
+
+  if (input.supportAgentId) {
+    try {
+      await createNotification({
+        recipientId: input.supportAgentId,
+        actorId: actor.id,
+        type: "TICKET_ASSIGNED",
+        title: `На вас назначена заявка #${ticket.number}`,
+        body: ticket.title,
+        href: "/helpdesk"
+      });
+    } catch (error) {
+      console.warn("Assign notification skipped:", error);
+    }
+  }
 
   revalidatePath("/");
   return ticket;

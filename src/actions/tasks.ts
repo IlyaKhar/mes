@@ -4,6 +4,8 @@ import type { Priority, TaskStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { requireSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { priorityLabels } from "@/lib/i18n";
+import { createNotification } from "@/lib/notifications";
 
 const boardStatuses = ["TODO", "IN_PROGRESS", "DONE"] as const satisfies TaskStatus[];
 type BoardTaskStatus = (typeof boardStatuses)[number];
@@ -36,6 +38,21 @@ export async function createTaskAction(input: {
       creatorId: user.id
     }
   });
+
+  if (input.assigneeId) {
+    try {
+      await createNotification({
+        recipientId: input.assigneeId,
+        actorId: user.id,
+        type: "TASK_ASSIGNED",
+        title: "На вас назначена задача",
+        body: `${priorityLabels[task.priority]} · ${task.title}`,
+        href: "/tasks"
+      });
+    } catch (error) {
+      console.warn("Task notification skipped:", error);
+    }
+  }
 
   revalidatePath("/");
   return task;

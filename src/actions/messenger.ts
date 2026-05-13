@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { createNotifications } from "@/lib/notifications";
 import { getPusherServer } from "@/lib/realtime/pusher-server";
 
 async function assertChatParticipant(chatId: string, userId: string) {
@@ -64,6 +65,32 @@ export async function sendMessage(input: {
     });
   } catch (error) {
     console.warn("Pusher trigger skipped:", error);
+  }
+
+  try {
+    const otherParticipants = await db.chatParticipant.findMany({
+      where: { chatId: input.chatId, userId: { not: user.id } },
+      select: { userId: true }
+    });
+    const chat = await db.chat.findUnique({
+      where: { id: input.chatId },
+      select: { title: true }
+    });
+
+    const preview = message.body.length > 120 ? `${message.body.slice(0, 120)}…` : message.body;
+
+    await createNotifications(
+      otherParticipants.map((participant) => ({
+        recipientId: participant.userId,
+        actorId: user.id,
+        type: "MESSAGE",
+        title: `${user.name} · ${chat?.title ?? "Чат"}`,
+        body: preview,
+        href: "/messenger"
+      }))
+    );
+  } catch (error) {
+    console.warn("Notification skipped:", error);
   }
 
   revalidatePath("/");

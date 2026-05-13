@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireSession } from "@/lib/auth";
 import { generateWorkIntervals } from "@/lib/calendar/shifts";
 import { db } from "@/lib/db";
+import { createNotifications } from "@/lib/notifications";
 
 class CalendarCollisionError extends Error {
   constructor(message: string) {
@@ -110,6 +111,30 @@ export async function createEventAction(input: {
       }
     }
   });
+
+  try {
+    const formattedStart = startsAt.toLocaleString("ru-RU", {
+      day: "numeric",
+      month: "long",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    await createNotifications(
+      participantIds
+        .filter((id) => id !== user.id)
+        .map((recipientId) => ({
+          recipientId,
+          actorId: user.id,
+          type: "EVENT_INVITE",
+          title: `Приглашение: ${event.title}`,
+          body: formattedStart,
+          href: "/calendar"
+        }))
+    );
+  } catch (error) {
+    console.warn("Event notification skipped:", error);
+  }
 
   revalidatePath("/");
   return event;

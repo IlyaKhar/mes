@@ -80,6 +80,17 @@ enum ActionLogType {
   ROLE_CHANGE
 }
 
+enum NotificationType {
+  MESSAGE
+  TICKET_ASSIGNED
+  TICKET_ESCALATED
+  TASK_ASSIGNED
+  TASK_STATUS
+  EVENT_INVITE
+  MENTION
+  SYSTEM
+}
+
 model User {
   id              String       @id @default(cuid())
   name            String
@@ -112,6 +123,8 @@ model User {
   fileVersions      FileVersion[]
   timeLogs          TimeLog[]
   actionLogs        ActionLog[]   @relation("ActionActor")
+  notifications     Notification[] @relation("NotificationRecipient")
+  notificationsFrom Notification[] @relation("NotificationActor")
 
   @@index([department])
   @@index([role])
@@ -360,4 +373,23 @@ model ActionLog {
   @@index([actorId])
   @@index([type])
   @@index([createdAt])
+}
+
+model Notification {
+  id          String           @id @default(cuid())
+  recipientId String
+  actorId     String?
+  type        NotificationType
+  title       String
+  body        String?
+  href        String?
+  isRead      Boolean          @default(false)
+  readAt      DateTime?
+  createdAt   DateTime         @default(now())
+
+  recipient User  @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  actor     User? @relation("NotificationActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([recipientId, isRead, createdAt])
+  @@index([recipientId, createdAt])
 }
