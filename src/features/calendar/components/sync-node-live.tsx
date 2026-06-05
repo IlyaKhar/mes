@@ -6,6 +6,7 @@ import { Building2, CalendarDays, Laptop, Save, Shuffle, Trash2 } from "lucide-r
 import { createEventAction, deleteEventAction } from "@/actions/calendar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { generateWorkIntervals } from "@/lib/calendar/shifts";
 import { cn } from "@/lib/utils";
 
 type CalendarUser = {
@@ -13,6 +14,7 @@ type CalendarUser = {
   name: string;
   email: string;
   shiftPattern: ShiftPattern;
+  shiftStartedAt: string | null;
   workdayStartsAt: string;
   workdayEndsAt: string;
 };
@@ -75,6 +77,33 @@ function overlaps(left: { startsAt: Date; endsAt: Date }, right: { startsAt: Dat
   return left.startsAt < right.endsAt && left.endsAt > right.startsAt;
 }
 
+function findUnavailableParticipant(
+  users: CalendarUser[],
+  participantIds: string[],
+  currentUserId: string,
+  startsAt: Date,
+  endsAt: Date
+) {
+  const selectedIds = new Set([currentUserId, ...participantIds]);
+
+  return users.find((calendarUser) => {
+    if (!selectedIds.has(calendarUser.id)) return false;
+
+    const workIntervals = generateWorkIntervals({
+      from: startsAt,
+      monthsAhead: 1,
+      pattern: calendarUser.shiftPattern,
+      shiftStartedAt: calendarUser.shiftStartedAt ? new Date(calendarUser.shiftStartedAt) : null,
+      workdayStartsAt: calendarUser.workdayStartsAt,
+      workdayEndsAt: calendarUser.workdayEndsAt
+    });
+
+    return !workIntervals.some(
+      (interval) => startsAt >= interval.startsAt && endsAt <= interval.endsAt
+    );
+  });
+}
+
 function getModeClassName(mode: EventMode) {
   if (mode === "REMOTE") return "bg-cyan-50 text-neos-cyan";
   if (mode === "TWO_TWO") return "bg-violet-50 text-neos-violet";
@@ -129,7 +158,15 @@ export function SyncNodeLive({
     )
   );
   const hasInvalidTime = selectedStart >= selectedEnd;
-  const hasCollision = Boolean(collisionEvent) || hasInvalidTime;
+  const unavailableParticipant = findUnavailableParticipant(
+    users,
+    participantIds,
+    currentUserId,
+    selectedStart,
+    selectedEnd
+  );
+  const hasShiftConflict = Boolean(unavailableParticipant);
+  const hasCollision = Boolean(collisionEvent) || hasInvalidTime || hasShiftConflict;
 
   function toggleParticipant(userId: string) {
     setParticipantIds((items) =>
@@ -144,7 +181,7 @@ export function SyncNodeLive({
 
     startTransition(async () => {
       try {
-        await createEventAction({
+        const result = await createEventAction({
           title,
           description,
           startsAt: selectedStart.toISOString(),
@@ -152,12 +189,18 @@ export function SyncNodeLive({
           mode: activeMode,
           participantIds
         });
+
+        if (!result.ok) {
+          setError(result.error);
+          return;
+        }
+
         setTitle("");
         setDescription("");
         setParticipantIds([]);
         window.location.reload();
-      } catch (caughtError) {
-        setError(caughtError instanceof Error ? caughtError.message : "Не удалось создать событие");
+      } catch {
+        setError("Не удалось создать событие. Попробуйте ещё раз.");
       }
     });
   }
@@ -363,9 +406,11 @@ export function SyncNodeLive({
             <div className={cn("rounded-default p-4 text-sm font-bold", hasCollision || error ? "bg-red-50 text-neos-danger" : "bg-white text-primary")}>
               {error || (hasInvalidTime
                 ? "Время указано неправильно."
-                : collisionEvent
-                  ? `Конфликт с событием: ${collisionEvent.title}`
-                  : "Слот свободен. Можно сохранять событие.")}
+                : unavailableParticipant
+                  ? `${unavailableParticipant.name} не на рабочей смене в этот день (график ${unavailableParticipant.shiftPattern === "TWO_TWO" ? "2/2" : "5/2"}). Выберите будний день или уберите участника.`
+                  : collisionEvent
+                    ? `Конфликт с событием: ${collisionEvent.title}`
+                    : "Слот свободен. Можно сохранять событие.")}
             </div>
 
             <Button type="submit" className="w-full gap-2" disabled={isPending || hasCollision || !title.trim()}>

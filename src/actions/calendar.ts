@@ -7,16 +7,13 @@ import { generateWorkIntervals } from "@/lib/calendar/shifts";
 import { db } from "@/lib/db";
 import { createNotifications } from "@/lib/notifications";
 
-class CalendarCollisionError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "CalendarCollisionError";
-  }
-}
-
 function formatTimeRange(startsAt: Date, endsAt: Date) {
   return `${startsAt.toLocaleString("ru-RU")} - ${endsAt.toLocaleString("ru-RU")}`;
 }
+
+export type CreateEventResult =
+  | { ok: true; eventId: string }
+  | { ok: false; error: string };
 
 export async function createEventAction(input: {
   title: string;
@@ -25,15 +22,17 @@ export async function createEventAction(input: {
   endsAt: Date | string;
   mode?: EventMode;
   participantIds?: string[];
-}) {
+}): Promise<CreateEventResult> {
   const user = await requireSession();
   const startsAt = new Date(input.startsAt);
   const endsAt = new Date(input.endsAt);
   const participantIds = Array.from(new Set([user.id, ...(input.participantIds ?? [])]));
 
-  if (!input.title.trim()) throw new Error("Название события обязательно");
+  if (!input.title.trim()) {
+    return { ok: false, error: "Название события обязательно" };
+  }
   if (Number.isNaN(startsAt.getTime()) || Number.isNaN(endsAt.getTime()) || startsAt >= endsAt) {
-    throw new Error("Некорректное время события");
+    return { ok: false, error: "Некорректное время события" };
   }
 
   const existingEvent = await db.event.findFirst({
@@ -61,9 +60,10 @@ export async function createEventAction(input: {
 
   if (existingEvent) {
     const participantNames = existingEvent.participants.map((item) => item.user.name).join(", ");
-    throw new CalendarCollisionError(
-      `Конфликт с событием "${existingEvent.title}" (${formatTimeRange(existingEvent.startsAt, existingEvent.endsAt)}). Участники: ${participantNames || "создатель"}`
-    );
+    return {
+      ok: false,
+      error: `Конфликт с событием «${existingEvent.title}» (${formatTimeRange(existingEvent.startsAt, existingEvent.endsAt)}). Участники: ${participantNames || "создатель"}`
+    };
   }
 
   const calendarUsers = await db.user.findMany({
@@ -93,9 +93,11 @@ export async function createEventAction(input: {
   });
 
   if (unavailableUser) {
-    throw new CalendarCollisionError(
-      `${unavailableUser.name} не на рабочей смене в выбранное время`
-    );
+    const patternLabel = unavailableUser.shiftPattern === "TWO_TWO" ? "2/2" : "5/2";
+    return {
+      ok: false,
+      error: `${unavailableUser.name} не на рабочей смене в выбранное время (график ${patternLabel}). Выберите будний день или уберите участника из списка.`
+    };
   }
 
   const event = await db.event.create({
@@ -137,7 +139,8 @@ export async function createEventAction(input: {
   }
 
   revalidatePath("/");
-  return event;
+  revalidatePath("/calendar");
+  return { ok: true, eventId: event.id };
 }
 
 export async function deleteEventAction(eventId: string) {

@@ -308,6 +308,7 @@ export async function CalendarDbWidget() {
     name: calendarUser.name,
     email: calendarUser.email,
     shiftPattern: calendarUser.shiftPattern,
+    shiftStartedAt: calendarUser.shiftStartedAt?.toISOString() ?? null,
     workdayStartsAt: calendarUser.workdayStartsAt,
     workdayEndsAt: calendarUser.workdayEndsAt
   }));
