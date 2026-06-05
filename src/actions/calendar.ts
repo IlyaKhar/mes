@@ -3,7 +3,6 @@
 import type { EventMode } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { requireSession } from "@/lib/auth";
-import { generateWorkIntervals } from "@/lib/calendar/shifts";
 import { db } from "@/lib/db";
 import { createNotifications } from "@/lib/notifications";
 
@@ -22,13 +21,11 @@ export async function createEventAction(input: {
   endsAt: Date | string;
   mode?: EventMode;
   participantIds?: string[];
-  timezoneOffsetMinutes?: number;
 }): Promise<CreateEventResult> {
   try {
     const user = await requireSession();
     const startsAt = new Date(input.startsAt);
     const endsAt = new Date(input.endsAt);
-    const timezoneOffsetMinutes = input.timezoneOffsetMinutes ?? 0;
     const participantIds = Array.from(new Set([user.id, ...(input.participantIds ?? [])]));
 
     if (!input.title.trim()) {
@@ -66,42 +63,6 @@ export async function createEventAction(input: {
       return {
         ok: false,
         error: `Конфликт с событием «${existingEvent.title}» (${formatTimeRange(existingEvent.startsAt, existingEvent.endsAt)}). Участники: ${participantNames || "создатель"}`
-      };
-    }
-
-    const calendarUsers = await db.user.findMany({
-      where: { id: { in: participantIds } },
-      select: {
-        id: true,
-        name: true,
-        shiftPattern: true,
-        shiftStartedAt: true,
-        workdayStartsAt: true,
-        workdayEndsAt: true
-      }
-    });
-
-    const unavailableUser = calendarUsers.find((calendarUser) => {
-      const workIntervals = generateWorkIntervals({
-        from: startsAt,
-        monthsAhead: 1,
-        pattern: calendarUser.shiftPattern,
-        shiftStartedAt: calendarUser.shiftStartedAt,
-        workdayStartsAt: calendarUser.workdayStartsAt,
-        workdayEndsAt: calendarUser.workdayEndsAt,
-        timezoneOffsetMinutes
-      });
-
-      return !workIntervals.some(
-        (interval) => startsAt >= interval.startsAt && endsAt <= interval.endsAt
-      );
-    });
-
-    if (unavailableUser) {
-      const patternLabel = unavailableUser.shiftPattern === "TWO_TWO" ? "2/2" : "5/2";
-      return {
-        ok: false,
-        error: `${unavailableUser.name} не на рабочей смене в выбранное время (график ${patternLabel}). Выберите будний день или уберите участника из списка.`
       };
     }
 

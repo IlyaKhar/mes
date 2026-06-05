@@ -169,8 +169,8 @@ export function SyncNodeLive({
     selectedEnd,
     timezoneOffsetMinutes
   );
-  const hasShiftConflict = Boolean(unavailableParticipant);
-  const hasCollision = Boolean(collisionEvent) || hasInvalidTime || hasShiftConflict;
+  const hasShiftWarning = Boolean(unavailableParticipant);
+  const hasCollision = Boolean(collisionEvent) || hasInvalidTime;
 
   function toggleParticipant(userId: string) {
     setParticipantIds((items) =>
@@ -191,8 +191,7 @@ export function SyncNodeLive({
           startsAt: selectedStart.toISOString(),
           endsAt: selectedEnd.toISOString(),
           mode: activeMode,
-          participantIds,
-          timezoneOffsetMinutes
+          participantIds
         });
 
         if (!result.ok) {
@@ -225,7 +224,7 @@ export function SyncNodeLive({
         <p className="text-sm font-black text-primary">Как работает Календарь?</p>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Это производственный календарь. Событие хранится в PostgreSQL, к нему привязаны участники.
-          Перед сохранением система проверяет, не заняты ли участники в другом событии и попадают ли они в рабочую смену.
+          Перед сохранением система проверяет, не заняты ли участники в другом событии. График смены показывается как подсказка.
         </p>
       </section>
 
@@ -408,13 +407,26 @@ export function SyncNodeLive({
               </div>
             </div>
 
-            <div className={cn("rounded-default p-4 text-sm font-bold", hasCollision || error ? "bg-red-50 text-neos-danger" : "bg-white text-primary")}>
+            {hasShiftWarning && !hasCollision && !error ? (
+              <div className="rounded-default bg-amber-50 p-4 text-sm font-bold text-amber-800">
+                {unavailableParticipant?.name} формально не на смене в этот слот (график{" "}
+                {unavailableParticipant?.shiftPattern === "TWO_TWO" ? "2/2" : "5/2"}). Встречу всё равно
+                можно сохранить.
+              </div>
+            ) : null}
+
+            <div
+              className={cn(
+                "rounded-default p-4 text-sm font-bold",
+                hasCollision || error ? "bg-red-50 text-neos-danger" : "bg-white text-primary"
+              )}
+            >
               {error || (hasInvalidTime
                 ? "Время указано неправильно."
-                : unavailableParticipant
-                  ? `${unavailableParticipant.name} не на рабочей смене в этот день (график ${unavailableParticipant.shiftPattern === "TWO_TWO" ? "2/2" : "5/2"}). Выберите будний день или уберите участника.`
-                  : collisionEvent
-                    ? `Конфликт с событием: ${collisionEvent.title}`
+                : collisionEvent
+                  ? `Конфликт с событием: ${collisionEvent.title}`
+                  : hasShiftWarning
+                    ? "Пересечений по времени нет."
                     : "Слот свободен. Можно сохранять событие.")}
             </div>
 

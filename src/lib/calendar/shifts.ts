@@ -30,7 +30,7 @@ function fromLocalParts(
   timezoneOffsetMinutes: number
 ) {
   return new Date(
-    Date.UTC(year, month, day, hours, minutes) - timezoneOffsetMinutes * 60 * 1000
+    Date.UTC(year, month, day, hours, minutes) + timezoneOffsetMinutes * 60 * 1000
   );
 }
 
