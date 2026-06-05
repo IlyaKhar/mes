@@ -82,7 +82,8 @@ function findUnavailableParticipant(
   participantIds: string[],
   currentUserId: string,
   startsAt: Date,
-  endsAt: Date
+  endsAt: Date,
+  timezoneOffsetMinutes: number
 ) {
   const selectedIds = new Set([currentUserId, ...participantIds]);
 
@@ -95,7 +96,8 @@ function findUnavailableParticipant(
       pattern: calendarUser.shiftPattern,
       shiftStartedAt: calendarUser.shiftStartedAt ? new Date(calendarUser.shiftStartedAt) : null,
       workdayStartsAt: calendarUser.workdayStartsAt,
-      workdayEndsAt: calendarUser.workdayEndsAt
+      workdayEndsAt: calendarUser.workdayEndsAt,
+      timezoneOffsetMinutes
     });
 
     return !workIntervals.some(
@@ -145,6 +147,7 @@ export function SyncNodeLive({
   const [participantIds, setParticipantIds] = React.useState<string[]>([]);
   const [error, setError] = React.useState("");
   const [isPending, startTransition] = React.useTransition();
+  const timezoneOffsetMinutes = new Date().getTimezoneOffset();
   const selectedStart = buildDate(monthDate, selectedDay, startsAt);
   const selectedEnd = buildDate(monthDate, selectedDay, endsAt);
   const selectedUserIds = new Set([currentUserId, ...participantIds]);
@@ -163,7 +166,8 @@ export function SyncNodeLive({
     participantIds,
     currentUserId,
     selectedStart,
-    selectedEnd
+    selectedEnd,
+    timezoneOffsetMinutes
   );
   const hasShiftConflict = Boolean(unavailableParticipant);
   const hasCollision = Boolean(collisionEvent) || hasInvalidTime || hasShiftConflict;
@@ -187,7 +191,8 @@ export function SyncNodeLive({
           startsAt: selectedStart.toISOString(),
           endsAt: selectedEnd.toISOString(),
           mode: activeMode,
-          participantIds
+          participantIds,
+          timezoneOffsetMinutes
         });
 
         if (!result.ok) {

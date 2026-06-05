@@ -22,125 +22,137 @@ export async function createEventAction(input: {
   endsAt: Date | string;
   mode?: EventMode;
   participantIds?: string[];
+  timezoneOffsetMinutes?: number;
 }): Promise<CreateEventResult> {
-  const user = await requireSession();
-  const startsAt = new Date(input.startsAt);
-  const endsAt = new Date(input.endsAt);
-  const participantIds = Array.from(new Set([user.id, ...(input.participantIds ?? [])]));
+  try {
+    const user = await requireSession();
+    const startsAt = new Date(input.startsAt);
+    const endsAt = new Date(input.endsAt);
+    const timezoneOffsetMinutes = input.timezoneOffsetMinutes ?? 0;
+    const participantIds = Array.from(new Set([user.id, ...(input.participantIds ?? [])]));
 
-  if (!input.title.trim()) {
-    return { ok: false, error: "Название события обязательно" };
-  }
-  if (Number.isNaN(startsAt.getTime()) || Number.isNaN(endsAt.getTime()) || startsAt >= endsAt) {
-    return { ok: false, error: "Некорректное время события" };
-  }
+    if (!input.title.trim()) {
+      return { ok: false, error: "Название события обязательно" };
+    }
+    if (Number.isNaN(startsAt.getTime()) || Number.isNaN(endsAt.getTime()) || startsAt >= endsAt) {
+      return { ok: false, error: "Некорректное время события" };
+    }
 
-  const existingEvent = await db.event.findFirst({
-    where: {
-      OR: [
-        { creatorId: { in: participantIds } },
-        { participants: { some: { userId: { in: participantIds } } } }
-      ],
-      startsAt: { lt: endsAt },
-      endsAt: { gt: startsAt }
-    },
-    select: {
-      title: true,
-      startsAt: true,
-      endsAt: true,
-      participants: {
-        select: {
-          user: {
-            select: { name: true }
+    const existingEvent = await db.event.findFirst({
+      where: {
+        OR: [
+          { creatorId: { in: participantIds } },
+          { participants: { some: { userId: { in: participantIds } } } }
+        ],
+        startsAt: { lt: endsAt },
+        endsAt: { gt: startsAt }
+      },
+      select: {
+        title: true,
+        startsAt: true,
+        endsAt: true,
+        participants: {
+          select: {
+            user: {
+              select: { name: true }
+            }
           }
         }
       }
-    }
-  });
-
-  if (existingEvent) {
-    const participantNames = existingEvent.participants.map((item) => item.user.name).join(", ");
-    return {
-      ok: false,
-      error: `Конфликт с событием «${existingEvent.title}» (${formatTimeRange(existingEvent.startsAt, existingEvent.endsAt)}). Участники: ${participantNames || "создатель"}`
-    };
-  }
-
-  const calendarUsers = await db.user.findMany({
-    where: { id: { in: participantIds } },
-    select: {
-      id: true,
-      name: true,
-      shiftPattern: true,
-      shiftStartedAt: true,
-      workdayStartsAt: true,
-      workdayEndsAt: true
-    }
-  });
-  const unavailableUser = calendarUsers.find((calendarUser) => {
-    const workIntervals = generateWorkIntervals({
-      from: startsAt,
-      monthsAhead: 1,
-      pattern: calendarUser.shiftPattern,
-      shiftStartedAt: calendarUser.shiftStartedAt,
-      workdayStartsAt: calendarUser.workdayStartsAt,
-      workdayEndsAt: calendarUser.workdayEndsAt
     });
 
-    return !workIntervals.some((interval) =>
-      startsAt >= interval.startsAt && endsAt <= interval.endsAt
-    );
-  });
+    if (existingEvent) {
+      const participantNames = existingEvent.participants.map((item) => item.user.name).join(", ");
+      return {
+        ok: false,
+        error: `Конфликт с событием «${existingEvent.title}» (${formatTimeRange(existingEvent.startsAt, existingEvent.endsAt)}). Участники: ${participantNames || "создатель"}`
+      };
+    }
 
-  if (unavailableUser) {
-    const patternLabel = unavailableUser.shiftPattern === "TWO_TWO" ? "2/2" : "5/2";
-    return {
-      ok: false,
-      error: `${unavailableUser.name} не на рабочей смене в выбранное время (график ${patternLabel}). Выберите будний день или уберите участника из списка.`
-    };
-  }
-
-  const event = await db.event.create({
-    data: {
-      title: input.title.trim(),
-      description: input.description,
-      startsAt,
-      endsAt,
-      mode: input.mode ?? "OFFICE",
-      creatorId: user.id,
-      participants: {
-        create: participantIds.map((userId) => ({ userId }))
+    const calendarUsers = await db.user.findMany({
+      where: { id: { in: participantIds } },
+      select: {
+        id: true,
+        name: true,
+        shiftPattern: true,
+        shiftStartedAt: true,
+        workdayStartsAt: true,
+        workdayEndsAt: true
       }
-    }
-  });
-
-  try {
-    const formattedStart = startsAt.toLocaleString("ru-RU", {
-      day: "numeric",
-      month: "long",
-      hour: "2-digit",
-      minute: "2-digit"
     });
 
-    await createNotifications(
-      participantIds
-        .filter((id) => id !== user.id)
-        .map((recipientId) => ({
-          recipientId,
-          actorId: user.id,
-          type: "EVENT_INVITE",
-          title: `Приглашение: ${event.title}`,
-          body: formattedStart,
-          href: "/calendar"
-        }))
-    );
-  } catch (error) {
-    console.warn("Event notification skipped:", error);
-  }
+    const unavailableUser = calendarUsers.find((calendarUser) => {
+      const workIntervals = generateWorkIntervals({
+        from: startsAt,
+        monthsAhead: 1,
+        pattern: calendarUser.shiftPattern,
+        shiftStartedAt: calendarUser.shiftStartedAt,
+        workdayStartsAt: calendarUser.workdayStartsAt,
+        workdayEndsAt: calendarUser.workdayEndsAt,
+        timezoneOffsetMinutes
+      });
 
-  revalidatePath("/");
-  revalidatePath("/calendar");
-  return { ok: true, eventId: event.id };
+      return !workIntervals.some(
+        (interval) => startsAt >= interval.startsAt && endsAt <= interval.endsAt
+      );
+    });
+
+    if (unavailableUser) {
+      const patternLabel = unavailableUser.shiftPattern === "TWO_TWO" ? "2/2" : "5/2";
+      return {
+        ok: false,
+        error: `${unavailableUser.name} не на рабочей смене в выбранное время (график ${patternLabel}). Выберите будний день или уберите участника из списка.`
+      };
+    }
+
+    const event = await db.event.create({
+      data: {
+        title: input.title.trim(),
+        description: input.description,
+        startsAt,
+        endsAt,
+        mode: input.mode ?? "OFFICE",
+        creatorId: user.id,
+        participants: {
+          create: participantIds.map((userId) => ({ userId }))
+        }
+      }
+    });
+
+    try {
+      const formattedStart = startsAt.toLocaleString("ru-RU", {
+        day: "numeric",
+        month: "long",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      await createNotifications(
+        participantIds
+          .filter((id) => id !== user.id)
+          .map((recipientId) => ({
+            recipientId,
+            actorId: user.id,
+            type: "EVENT_INVITE",
+            title: `Приглашение: ${event.title}`,
+            body: formattedStart,
+            href: "/calendar"
+          }))
+      );
+    } catch (error) {
+      console.warn("Event notification skipped:", error);
+    }
+
+    revalidatePath("/");
+    revalidatePath("/calendar");
+    return { ok: true, eventId: event.id };
+  } catch (error) {
+    console.error("createEventAction failed:", error);
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Не удалось создать событие"
+    };
+  }
 }
 
 export async function deleteEventAction(eventId: string) {

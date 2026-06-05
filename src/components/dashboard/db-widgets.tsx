@@ -286,6 +286,7 @@ export async function CalendarDbWidget() {
   ]);
   const todayStart = new Date(now);
   todayStart.setHours(0, 0, 0, 0);
+  const timezoneOffsetMinutes = -300;
   const officeToday = users.filter((calendarUser) =>
     generateWorkIntervals({
       from: todayStart,
@@ -293,7 +294,8 @@ export async function CalendarDbWidget() {
       pattern: calendarUser.shiftPattern,
       shiftStartedAt: calendarUser.shiftStartedAt,
       workdayStartsAt: calendarUser.workdayStartsAt,
-      workdayEndsAt: calendarUser.workdayEndsAt
+      workdayEndsAt: calendarUser.workdayEndsAt,
+      timezoneOffsetMinutes
     }).some((interval) => interval.startsAt.toDateString() === todayStart.toDateString())
   );
   const serializedEvents = events.map((event) => ({

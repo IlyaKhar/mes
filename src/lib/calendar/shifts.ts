@@ -13,78 +13,129 @@ type GenerateWorkIntervalsInput = {
   shiftStartedAt?: Date | null;
   workdayStartsAt: string;
   workdayEndsAt: string;
+  /** Как в Date.getTimezoneOffset(): разница UTC и локального времени в минутах */
+  timezoneOffsetMinutes?: number;
 };
 
-function startOfDay(date: Date) {
-  const result = new Date(date);
-  result.setHours(0, 0, 0, 0);
-
-  return result;
+function toLocalMs(utcMs: number, timezoneOffsetMinutes: number) {
+  return utcMs - timezoneOffsetMinutes * 60 * 1000;
 }
 
-function addDays(date: Date, days: number) {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
-
-  return result;
+function fromLocalParts(
+  year: number,
+  month: number,
+  day: number,
+  hours: number,
+  minutes: number,
+  timezoneOffsetMinutes: number
+) {
+  return new Date(
+    Date.UTC(year, month, day, hours, minutes) - timezoneOffsetMinutes * 60 * 1000
+  );
 }
 
-function addMonths(date: Date, months: number) {
-  const result = new Date(date);
-  result.setMonth(result.getMonth() + months);
+function getLocalParts(date: Date, timezoneOffsetMinutes: number) {
+  const localMs = toLocalMs(date.getTime(), timezoneOffsetMinutes);
+  const local = new Date(localMs);
 
-  return result;
+  return {
+    year: local.getUTCFullYear(),
+    month: local.getUTCMonth(),
+    day: local.getUTCDate(),
+    dayOfWeek: local.getUTCDay()
+  };
 }
 
-function applyTime(date: Date, time: string) {
+function startOfLocalDay(date: Date, timezoneOffsetMinutes: number) {
+  const parts = getLocalParts(date, timezoneOffsetMinutes);
+  return fromLocalParts(parts.year, parts.month, parts.day, 0, 0, timezoneOffsetMinutes);
+}
+
+function addLocalDays(date: Date, days: number) {
+  return new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
+}
+
+function addLocalMonths(date: Date, months: number, timezoneOffsetMinutes: number) {
+  const parts = getLocalParts(date, timezoneOffsetMinutes);
+  return fromLocalParts(parts.year, parts.month + months, parts.day, 0, 0, timezoneOffsetMinutes);
+}
+
+function applyLocalTime(day: Date, time: string, timezoneOffsetMinutes: number) {
   const [hours, minutes] = time.split(":").map(Number);
-  const result = new Date(date);
-  result.setHours(hours, minutes, 0, 0);
-
-  return result;
+  const parts = getLocalParts(day, timezoneOffsetMinutes);
+  return fromLocalParts(parts.year, parts.month, parts.day, hours, minutes, timezoneOffsetMinutes);
 }
 
-function getDayDiff(left: Date, right: Date) {
+function getDayDiff(left: Date, right: Date, timezoneOffsetMinutes: number) {
   const msInDay = 24 * 60 * 60 * 1000;
+  const leftStart = startOfLocalDay(left, timezoneOffsetMinutes).getTime();
+  const rightStart = startOfLocalDay(right, timezoneOffsetMinutes).getTime();
 
-  return Math.floor((startOfDay(left).getTime() - startOfDay(right).getTime()) / msInDay);
+  return Math.floor((leftStart - rightStart) / msInDay);
 }
 
-function isFiveTwoWorkday(date: Date) {
-  const day = date.getDay();
-
-  return day !== 0 && day !== 6;
+function isFiveTwoWorkday(dayOfWeek: number) {
+  return dayOfWeek !== 0 && dayOfWeek !== 6;
 }
 
-function isTwoTwoWorkday(date: Date, shiftStartedAt?: Date | null) {
+function isTwoTwoWorkday(
+  date: Date,
+  shiftStartedAt: Date | null | undefined,
+  timezoneOffsetMinutes: number
+) {
   const anchor = shiftStartedAt ?? new Date("2026-01-01T00:00:00.000Z");
-  const dayDiff = getDayDiff(date, anchor);
+  const dayDiff = getDayDiff(date, anchor, timezoneOffsetMinutes);
   const cycleDay = ((dayDiff % 4) + 4) % 4;
 
   return cycleDay === 0 || cycleDay === 1;
 }
 
-function isWorkday(date: Date, pattern: ShiftPattern, shiftStartedAt?: Date | null) {
-  if (pattern === "TWO_TWO") return isTwoTwoWorkday(date, shiftStartedAt);
+function isWorkday(
+  date: Date,
+  pattern: ShiftPattern,
+  shiftStartedAt: Date | null | undefined,
+  timezoneOffsetMinutes: number
+) {
+  const { dayOfWeek } = getLocalParts(date, timezoneOffsetMinutes);
 
-  return isFiveTwoWorkday(date);
+  if (pattern === "TWO_TWO") {
+    return isTwoTwoWorkday(date, shiftStartedAt, timezoneOffsetMinutes);
+  }
+
+  return isFiveTwoWorkday(dayOfWeek);
 }
 
-export function intervalsOverlap(left: { startsAt: Date; endsAt: Date }, right: { startsAt: Date; endsAt: Date }) {
+export function intervalsOverlap(
+  left: { startsAt: Date; endsAt: Date },
+  right: { startsAt: Date; endsAt: Date }
+) {
   return left.startsAt < right.endsAt && left.endsAt > right.startsAt;
 }
 
-export function generateWorkIntervals(input: GenerateWorkIntervalsInput): WorkInterval[] {
-  const intervals: WorkInterval[] = [];
-  const start = startOfDay(input.from);
-  const end = addMonths(start, input.monthsAhead ?? 1);
+export function isWithinWorkIntervals(
+  startsAt: Date,
+  endsAt: Date,
+  intervals: WorkInterval[]
+) {
+  return intervals.some(
+    (interval) => startsAt >= interval.startsAt && endsAt <= interval.endsAt
+  );
+}
 
-  for (let cursor = start; cursor < end; cursor = addDays(cursor, 1)) {
-    if (!isWorkday(cursor, input.pattern, input.shiftStartedAt)) continue;
+export function generateWorkIntervals(input: GenerateWorkIntervalsInput): WorkInterval[] {
+  const timezoneOffsetMinutes = input.timezoneOffsetMinutes ?? 0;
+  const intervals: WorkInterval[] = [];
+  const start = startOfLocalDay(input.from, timezoneOffsetMinutes);
+  const end = addLocalMonths(start, input.monthsAhead ?? 1, timezoneOffsetMinutes);
+
+  for (let cursor = start; cursor < end; cursor = addLocalDays(cursor, 1)) {
+    if (!isWorkday(cursor, input.pattern, input.shiftStartedAt, timezoneOffsetMinutes)) {
+      continue;
+    }
 
     intervals.push({
-      startsAt: applyTime(cursor, input.workdayStartsAt),
-      endsAt: applyTime(cursor, input.workdayEndsAt),
+      startsAt: applyLocalTime(cursor, input.workdayStartsAt, timezoneOffsetMinutes),
+      endsAt: applyLocalTime(cursor, input.workdayEndsAt, timezoneOffsetMinutes),
       pattern: input.pattern
     });
   }
