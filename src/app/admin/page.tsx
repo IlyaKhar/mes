@@ -1,25 +1,18 @@
 import { redirect } from "next/navigation";
-import type { Department } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { setUserBannedAction, updateUserDepartmentAction, updateUserRoleAction } from "@/actions/admin";
+import { UserDepartmentSelect } from "@/components/admin/user-department-select";
+import { UserRoleSelect } from "@/components/admin/user-role-select";
+import { setUserBannedAction } from "@/actions/admin";
 import { requireSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import {
   actionLogTypeLabels,
-  departmentLabels,
   roleDescriptions,
   roleLabels
 } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
-
-const departmentRotation: Department[] = ["IT", "HR", "PROCUREMENT", "OPERATIONS"];
-
-function nextDepartment(current: Department): Department {
-  const idx = departmentRotation.indexOf(current);
-  return departmentRotation[(idx + 1) % departmentRotation.length];
-}
 
 export default async function AdminPage() {
   const session = await requireSession();
@@ -74,7 +67,7 @@ export default async function AdminPage() {
         <CardHeader>
           <div>
             <CardTitle>Управление пользователями</CardTitle>
-            <CardDescription>Нажмите на роль или отдел, чтобы переключить значение</CardDescription>
+            <CardDescription>Выберите роль и отдел в списке — изменения сохраняются сразу</CardDescription>
           </div>
         </CardHeader>
         <CardContent>
@@ -97,36 +90,14 @@ export default async function AdminPage() {
                       <p className="text-xs text-muted-foreground">{user.email}</p>
                     </td>
                     <td className="px-4 py-4">
-                      <form
-                        action={updateUserRoleAction.bind(null, {
-                          userId: user.id,
-                          role: user.role === "ADMIN" ? "USER" : "ADMIN"
-                        })}
-                      >
-                        <button
-                          type="submit"
-                          title="Сменить роль"
-                          className="rounded-full bg-neos-accentSoft px-3 py-1 text-xs font-bold text-primary transition hover:bg-primary hover:text-white"
-                        >
-                          {roleLabels[user.role]}
-                        </button>
-                      </form>
+                      <UserRoleSelect
+                        userId={user.id}
+                        value={user.role}
+                        disabled={session.id === user.id && user.role === "ADMIN"}
+                      />
                     </td>
                     <td className="px-4 py-4">
-                      <form
-                        action={updateUserDepartmentAction.bind(null, {
-                          userId: user.id,
-                          department: nextDepartment(user.department)
-                        })}
-                      >
-                        <button
-                          type="submit"
-                          title="Сменить отдел"
-                          className="rounded-full bg-neos-accentSoft px-3 py-1 text-xs font-bold text-primary transition hover:bg-primary hover:text-white"
-                        >
-                          {departmentLabels[user.department]}
-                        </button>
-                      </form>
+                      <UserDepartmentSelect userId={user.id} value={user.department} />
                     </td>
                     <td className="px-4 py-4">
                       <Badge tone={user.isBanned ? "red" : "green"}>
@@ -164,45 +135,35 @@ export default async function AdminPage() {
                     {user.isBanned ? "Заблокирован" : "Активен"}
                   </Badge>
                 </div>
-                <div className="mt-3 flex flex-wrap items-center gap-2">
-                  <form
-                    action={updateUserRoleAction.bind(null, {
-                      userId: user.id,
-                      role: user.role === "ADMIN" ? "USER" : "ADMIN"
-                    })}
-                  >
-                    <button
-                      type="submit"
-                      className="min-h-[36px] rounded-full bg-neos-accentSoft px-3 text-xs font-bold text-primary active:scale-95"
-                    >
-                      {roleLabels[user.role]}
-                    </button>
-                  </form>
-                  <form
-                    action={updateUserDepartmentAction.bind(null, {
-                      userId: user.id,
-                      department: nextDepartment(user.department)
-                    })}
-                  >
-                    <button
-                      type="submit"
-                      className="min-h-[36px] rounded-full bg-neos-accentSoft px-3 text-xs font-bold text-primary active:scale-95"
-                    >
-                      {departmentLabels[user.department]}
-                    </button>
-                  </form>
-                  <form
-                    action={setUserBannedAction.bind(null, { userId: user.id, isBanned: !user.isBanned })}
-                    className="ml-auto"
-                  >
-                    <button
-                      type="submit"
-                      className="min-h-[36px] px-1 text-xs font-bold text-primary underline-offset-2 active:underline"
-                    >
-                      {user.isBanned ? "Разблокировать" : "Заблокировать"}
-                    </button>
-                  </form>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  <label className="block space-y-1.5">
+                    <span className="text-[11px] font-black uppercase tracking-[0.12em] text-muted-foreground">
+                      Роль
+                    </span>
+                    <UserRoleSelect
+                      userId={user.id}
+                      value={user.role}
+                      disabled={session.id === user.id && user.role === "ADMIN"}
+                    />
+                  </label>
+                  <label className="block space-y-1.5">
+                    <span className="text-[11px] font-black uppercase tracking-[0.12em] text-muted-foreground">
+                      Отдел
+                    </span>
+                    <UserDepartmentSelect userId={user.id} value={user.department} />
+                  </label>
                 </div>
+                <form
+                  action={setUserBannedAction.bind(null, { userId: user.id, isBanned: !user.isBanned })}
+                  className="mt-3"
+                >
+                  <button
+                    type="submit"
+                    className="min-h-[36px] px-1 text-xs font-bold text-primary underline-offset-2 active:underline"
+                  >
+                    {user.isBanned ? "Разблокировать" : "Заблокировать"}
+                  </button>
+                </form>
               </li>
             ))}
           </ul>
